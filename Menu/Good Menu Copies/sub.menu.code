@@ -1,0 +1,30 @@
+		Button option1 = new Button(0, 250, 70, 600, Color.BLUE, "subMenu1");
+		Button option2 = new Button(0, 350, 70, 600, Color.BLUE, "subMenu2");
+		Button option3 = new Button(0, 450, 70, 600, Color.BLUE, "subMenu3");
+		Button option4 = new Button(0, 550, 70, 600, Color.BLUE, "subMenu4");
+
+		screen.add(option1);
+		screen.add(option2);
+		screen.add(option3);
+		screen.add(option4);
+
+		Text title = new Text(40, 150, 120, "Menu Test", "title");
+		Text subtitle = new Text(80, 200, 30, "> in sub menu", "subtitle");
+		Text option1Text = new Text(650, 300, 50, "Ya", "sm1Text");
+		Text option2Text = new Text(650, 400, 50, "Like", "sm2Text");
+		Text option3Text = new Text(650, 500, 50, "Jazz", "sm3Text");
+		Text option4Text = new Text(650, 600, 50, "Return", "sm4Text");
+		Text watermark = new Text(10, 650, 12, "By - Riley Power", "wmark");
+
+		screen.add(title);
+		screen.add(subtitle);
+		screen.add(option1Text);
+		screen.add(option2Text);
+		screen.add(option3Text);
+		screen.add(option4Text);
+		screen.add(watermark);
+
+		Picture penguin = new Picture(750, 60, "pengu", "penguinDance.gif");
+		screen.add(penguin);
+		
+		screen.saveElements("sub.menu");
