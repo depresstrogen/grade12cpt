@@ -1,23 +1,33 @@
 import java.awt.Color;
 import java.util.Stack;
+
+/**
+ * Parses every mouse click to avoid clogging the Screen class with all the
+ * possible cases
+ * 
+ * @version January 14, 2020
+ * @author Riley Power
+ *
+ */
+
 public class MouseHandler {
 	Stack<String> stack = new Stack<String>();
+
 	/**
 	 * Process the latest mouse input at the time it is called It currently checks
-	 * for - Button Clicks 
-	 * This method is very flexible, and you have to have a case
-	 * for every action that is planned to be implemented
-	 * also like every possible clickable object is here so...
+	 * for - Button Clicks This method is very flexible, and you have to have a case
+	 * for every action that is planned to be implemented also like every possible
+	 * clickable object is here so...
+	 * 
 	 * @param screen The screen which contains
 	 */
-	public void mouseInputs(Screen screen) {
+	public void mouseInputs(Screen screen, Game game) {
 		Button button;
 		Text text;
 		if (screen.isNewClick()) {
 			String lastClick = screen.getLastClick();
-			
 			switch (lastClick) {
-//option1
+
 			case "mainMenu1":
 				button = (Button) screen.getLastClickObject();
 				screen.loadElements("sub.menu");
@@ -64,7 +74,18 @@ public class MouseHandler {
 				screen.replace(button, screen.getIndex(lastClick));
 				screen.replace(text, screen.getIndex("mm4Text"));
 				break;
-				
+
+			case "subMenu1":
+				// Starts the game on a new thread
+				Thread thread = new Thread() {
+					public void run() {
+						game.start(screen);
+						;
+					}
+				};
+				thread.start();
+				break;
+
 			case "subMenu4":
 				button = (Button) screen.getLastClickObject();
 				screen.loadElements("main.menu");

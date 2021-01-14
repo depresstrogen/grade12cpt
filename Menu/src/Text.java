@@ -1,10 +1,18 @@
 import java.awt.Color;
+
+/**
+ * The class for all text to be displayed on screen
+ * 
+ * @version January 14, 2021
+ * @author Riley
+ *
+ */
 public class Text extends ScreenElement {
 	private int fontSize;
 	private String text;
 	private Color color;
 	private String font;
-	
+
 	/**
 	 * 
 	 * @param x
@@ -20,35 +28,35 @@ public class Text extends ScreenElement {
 		color = Color.BLACK;
 		font = "Helvetica";
 	}
-	
+
 	/**
 	 * @return Returns the font size of the text object
 	 */
 	public int getFontSize() {
 		return fontSize;
 	}
-	
+
 	/**
 	 * @return Returns the text contained in the text object
 	 */
 	public String getText() {
 		return text;
 	}
-	
+
 	/**
 	 * @return Returns the desired color the text object
 	 */
 	public Color getColor() {
 		return color;
 	}
-	
+
 	/**
 	 * @return Returns the font of the text object as a string
 	 */
 	public String getFont() {
 		return font;
 	}
-	
+
 	/**
 	 * 
 	 * @param text The text to insert in the text object

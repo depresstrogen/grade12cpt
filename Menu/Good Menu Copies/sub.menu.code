@@ -10,9 +10,9 @@
 
 		Text title = new Text(40, 150, 120, "Menu Test", "title");
 		Text subtitle = new Text(80, 200, 30, "> in sub menu", "subtitle");
-		Text option1Text = new Text(650, 300, 50, "Ya", "sm1Text");
-		Text option2Text = new Text(650, 400, 50, "Like", "sm2Text");
-		Text option3Text = new Text(650, 500, 50, "Jazz", "sm3Text");
+		Text option1Text = new Text(650, 300, 50, "Start Game", "sm1Text");
+		Text option2Text = new Text(650, 400, 50, "", "sm2Text");
+		Text option3Text = new Text(650, 500, 50, "", "sm3Text");
 		Text option4Text = new Text(650, 600, 50, "Return", "sm4Text");
 		Text watermark = new Text(10, 650, 12, "By - Riley Power", "wmark");
 
