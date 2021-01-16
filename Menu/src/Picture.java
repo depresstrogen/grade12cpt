@@ -21,12 +21,12 @@ public class Picture extends ScreenElement {
 	public Picture(int x, int y, String id, String directory) {
 		super(x, y, id);
 		imageDir = directory;
-	}
+	}//getImage
 
 	/**
 	 * @return Returns the directory of the image in the object
 	 */
 	public String getImage() {
 		return imageDir;
-	}
-}
+	}//getImage
+}//Picture

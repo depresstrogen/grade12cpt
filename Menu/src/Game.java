@@ -1,3 +1,5 @@
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -6,58 +8,79 @@ import javax.imageio.ImageIO;
 
 /**
  * This class contains everything that is needed for the actual game and its
- * world such as
- * 	- Keyboard Input
- *  - Player Movement
- *  - Background Movement
- *  - Modifying Player Images
+ * world such as - Keyboard Input - Player Movement - Background Movement -
+ * Modifying Player Images
  * 
- * @version January 14, 2021
+ * @version January 16, 2021
  * @author Riley Power
  */
 public class Game {
 	// Coordinates of player
 	private double playerX = 1500;
-	private double playerY = 1000;
+	private double playerY = 7000;
 	// Total player angle
 	private double playerAngle = 0;
 	// X and Y angle of player separated
 	private double playerDX;
 	private double playerDY;
 	// Speed multiplier of car
-	private int carSpeed = 15;
+	private int carSpeed = 10;
 	// Global version of car object, not necessary but its easier to use this as a
 	// unrotated version of the image
 	private Car car;
-	BufferedImage carPic;
+	//Images used by the game
+	private BufferedImage carPic;
+	private BufferedImage collision;
+	private BufferedImage backgroundImage;
+	//The height and width of the background layer
+	private int bkgWidth;
+	private int bkgHeight;
 
+	/**
+	 * The main game loop, starts the game, loads all files and then deals with
+	 * anything to do actually playing the game
+	 * 
+	 * @param screen The screen to paint everything to
+	 */
 	synchronized void start(Screen screen) {
+		//Load Images
 		try {
 			carPic = ImageIO.read(new File("testcar.png"));
+			collision = ImageIO.read(new File("collision.png"));
+			backgroundImage = ImageIO.read(new File("map.png"));
 		} catch (Exception e) {
-
 		}
-		car = new Car(2, (screen.getHeight() / 2) - (carPic.getHeight() / 2), "Player", carPic);
-		// Frame rate of game
+		//Frame rate of game
 		int fps = 60;
 		long fpsTime = System.currentTimeMillis();
-		// Removes the menu elements
+		//Removes the menu elements
 		screen.clearScreen();
-		// Paints background and car
-		Picture background = new Picture((int) (0 - playerX), (int) (0 - playerY), "background", "testbkg.jpg");
+		//Declares Objects
+		car = new Car(2, (screen.getHeight() / 2) - (carPic.getHeight() / 2), "Player", carPic);
+		Background background = new Background((int) (0 - playerX), (int) (0 - playerY), "background", backgroundImage);
 		Car car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
 				(screen.getHeight() / 2) - (carPic.getHeight() / 2), "Player", carPic);
+		//Adds images to the screen
 		screen.add(background);
 		screen.add(car);
+		//Declares height and width to speed things up later
+		bkgWidth = background.getImage().getWidth();
+		bkgHeight = background.getImage().getHeight();
 		// Commits the changes to the screen
 		screen.repaint();
+		//Main game loop
 		while (true) {
+			//Declare the next frame time
 			fpsTime = System.currentTimeMillis() + (1000 / fps);
 			while (System.currentTimeMillis() < fpsTime) {
 				// To do as fast as possible if anything
+				//If nothing here it just waits until the next frame is needed
 			}
+			//Get inputs and check collision
 			keyboardInputs(screen.getKeyboard());
-			Picture bkg = (Picture) screen.getScreenElement("background");
+			checkCollision(car);
+			//Gets the background object from the elements array instead of the local one
+			Background bkg = (Background) screen.getScreenElement("background");
 			// Shifts background instead of player
 			bkg.setX((int) (0 - playerX));
 			bkg.setY((int) (0 - playerY));
@@ -67,8 +90,13 @@ public class Game {
 			screen.replace(bkg, screen.getIndex("background"));
 			screen.replace(car, screen.getIndex("Player"));
 		}
-	}
+	}//start
 
+	/**
+	 * Rotates the car image
+	 * 
+	 * @return The rotated version of the image
+	 */
 	public BufferedImage rotateImage() {
 		BufferedImage img = car.getImage();
 		// Applies Rotation to image, pivoting at the center of the image
@@ -78,8 +106,14 @@ public class Game {
 		// Applies Filtering to the image so the pixels don't look jumpy
 		BufferedImage rotatedImage = filter.filter(img, null);
 		return rotatedImage;
-	}
+	}//rotateImage
 
+	/**
+	 * Processes keyboard inputs and calculates player movement
+	 * 
+	 * @param keyboard An array with every possible key, and whether it is pressed
+	 *                 or not
+	 */
 	public void keyboardInputs(boolean[] keyboard) {
 		boolean left = keyboard['A'];
 		boolean right = keyboard['D'];
@@ -119,5 +153,114 @@ public class Game {
 			playerY -= playerDY * carSpeed;
 		}
 
-	}
-}
+	}//keyboardInputs
+
+	/**
+	 * Checks if the car is out of bounds, or in a pink area on the collision map
+	 * and adjusts the cars position accordingly
+	 * 
+	 * @param car The car to check collision on
+	 */
+	public void checkCollision(Car car) {
+		int pinkValue = -65281;
+
+		int shiftX = 420;
+		// 260
+		int shiftY = 260;
+		// Height / width of the car image
+		int imageWidth = car.getImage().getWidth();
+		int imageHeight = car.getImage().getHeight();
+		// The amount of whitespace on the sides of the car image
+		int whiteSpace = 38;
+		// Center of image
+		double centerX = playerX + shiftX + (imageWidth / 2);
+		double centerY = playerY + shiftY + (imageHeight / 2);
+		// Y Axis, top and bottom of car
+		double playerUp = centerY - (imageHeight / 2) + whiteSpace;
+		double playerDown = centerY + (imageHeight / 2) - whiteSpace;
+		// X Axis, sides of car
+		double playerLeft = centerX - (imageWidth / 2) + whiteSpace;
+		double playerRight = centerX + (imageWidth / 2) - whiteSpace;
+
+		// out of screen bounds
+		if (playerLeft < 0) {
+			playerLeft = 0;
+			centerX = playerLeft + (imageWidth / 2) - whiteSpace;
+		}
+		if (playerRight > bkgWidth) {
+			playerRight = bkgWidth;
+			centerX = playerRight - (imageWidth / 2) + whiteSpace;
+		}
+		if (playerUp < 0) {
+			playerUp = 0;
+			centerY = playerUp + (imageHeight / 2) - whiteSpace;
+		}
+		if (playerDown > bkgHeight) {
+			playerDown = bkgHeight;
+			centerY = playerDown - (imageHeight / 2) + whiteSpace;
+		}
+		// Check for OOB position below car
+		if (collision.getRGB((int) centerX, (int) playerDown) == pinkValue) {
+			boolean collisionLoop = true;
+			while (collisionLoop) {
+				playerDown--;
+				if (collision.getRGB((int) centerX, (int) playerDown) == pinkValue) {
+
+				} else {
+					collisionLoop = false;
+				}
+			}
+			centerY = playerDown - (imageHeight / 2) + whiteSpace;
+			playerUp = centerY - (imageHeight / 2) + whiteSpace;
+		}
+
+		// Check for OOB position above car
+		if (collision.getRGB((int) centerX, (int) playerUp) == pinkValue) {
+			boolean collisionLoop = true;
+			while (collisionLoop) {
+				playerUp++;
+				if (collision.getRGB((int) centerX, (int) playerUp) == pinkValue) {
+
+				} else {
+					collisionLoop = false;
+				}
+			}
+			centerY = playerUp + (imageHeight / 2) - whiteSpace;
+			playerDown = centerY + (imageHeight / 2) - whiteSpace;
+		}
+
+		// Check for OOB position left of car
+		if (collision.getRGB((int) playerLeft, (int) centerY) == pinkValue) {
+			boolean collisionLoop = true;
+			while (collisionLoop) {
+				playerLeft++;
+				if (collision.getRGB((int) playerLeft, (int) centerY) == pinkValue) {
+
+				} else {
+					collisionLoop = false;
+				}
+			}
+			centerX = playerLeft + (imageWidth / 2) - whiteSpace;
+			playerRight = centerX + (imageWidth / 2) - whiteSpace;
+		}
+
+		// Check for OOB position right of car
+		if (collision.getRGB((int) playerRight, (int) centerY) == pinkValue) {
+			boolean collisionLoop = true;
+			while (collisionLoop) {
+				playerRight--;
+				if (collision.getRGB((int) playerRight, (int) centerY) == pinkValue) {
+
+				} else {
+					collisionLoop = false;
+				}
+			}
+			centerX = playerRight - (imageWidth / 2) + whiteSpace;
+			playerLeft = centerX - (imageWidth / 2) + whiteSpace;
+		}
+
+		// use
+		playerX = centerX - shiftX - (imageWidth / 2);
+		playerY = centerY - shiftY - (imageHeight / 2);
+	}//checkCollision
+}//Game

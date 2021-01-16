@@ -5,13 +5,12 @@ import java.util.Stack;
  * Parses every mouse click to avoid clogging the Screen class with all the
  * possible cases
  * 
- * @version January 14, 2020
+ * @version January 16, 2020
  * @author Riley Power
  *
  */
 
 public class MouseHandler {
-	Stack<String> stack = new Stack<String>();
 
 	/**
 	 * Process the latest mouse input at the time it is called It currently checks
@@ -35,7 +34,7 @@ public class MouseHandler {
 
 			case "mainMenu2":
 				button = (Button) screen.getLastClickObject();
-				text = (Text) screen.getScreenElement("mm2Text");
+				text = (Text) screen.getScreenElement("mm2t");
 				if (button.getColor().equals(Color.RED)) {
 					button.setColor(Color.ORANGE);
 					text.setText("Orange");
@@ -77,6 +76,7 @@ public class MouseHandler {
 
 			case "subMenu1":
 				// Starts the game on a new thread
+				screen.loadElements("loading.menu");
 				Thread thread = new Thread() {
 					public void run() {
 						game.start(screen);
@@ -92,5 +92,5 @@ public class MouseHandler {
 				break;
 			}
 		}
-	}
-}
+	}//mouseInputs
+}//MouseHandler

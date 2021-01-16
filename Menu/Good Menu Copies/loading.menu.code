@@ -1,0 +1,7 @@
+		Picture loadgif = new Picture(20,500,"loadgif","loading.gif");
+		screen.add(loadgif);
+		
+		Text loading = new Text(180, 600, 100, "Loading...", "loadtext");
+		screen.add(loading);
+		
+		screen.saveElements("loading.menu");

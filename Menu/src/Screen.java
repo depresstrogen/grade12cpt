@@ -7,25 +7,25 @@ import javax.swing.*;
  * Everything to do with drawing the screen, getting mouse movement, and
  * anything to do with the main window is performed in this class
  * 
- * @version January 14, 2021
+ * @version January 16, 2021
  * @author Riley Power
  *
  */
 public class Screen extends JPanel implements ActionListener, MouseListener {
-	JFrame frame;
-	ArrayList<ScreenElement> elements = new ArrayList<ScreenElement>();
-	ArrayList<Object> objects = new ArrayList<Object>();
-	boolean[] keyboard = new boolean[255];
-	MouseHandler mouse = new MouseHandler();
+	private JFrame frame;
+	private ArrayList<ScreenElement> elements = new ArrayList<ScreenElement>();
+	private ArrayList<Object> objects = new ArrayList<Object>();
+	private boolean[] keyboard = new boolean[255];
+	private MouseHandler mouse = new MouseHandler();
 	// The id of the ScreenElement that was last clicked
-	String lastClick = "";
+	private String lastClick = "";
 	// A copy of the ScreenElement that was last clicked
-	Object lastClickObject;
+	private Object lastClickObject;
 	// Used so that unless a new click is made the clicking methods are not executed
-	boolean newClick = false;
+	private boolean newClick = false;
 	// Starts the game but doesn't display it until the start method is called
-	Game game = new Game();
-
+	private Game game = new Game();
+	private Color backgroundColor = Color.WHITE;
 	/**
 	 * Constructs the jFrame, mouse listener and key listener
 	 * 
@@ -78,7 +78,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 			}
 		});
 		addMouseListener(this);
-	}// Screen
+	}//Screen
 
 	/**
 	 * @param g The canvas to paint every object to
@@ -87,6 +87,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 		// Main Paint Loop
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
+		g2d.setBackground(backgroundColor);
 		// Loops through each item in the ArrayList and paints it depending which object
 		for (int i = 0; i < elements.size(); i++) {
 			if (elements.get(i) instanceof Button) {
@@ -111,12 +112,15 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 				Car car = (Car) elements.get(i);
 				g2d.drawImage(car.getImage(), car.getX(), car.getY(), null);
 			}
-
+			if (elements.get(i) instanceof Background) {
+				Background bkg = (Background) elements.get(i);
+				g2d.drawImage(bkg.getImage(), bkg.getX(), bkg.getY(), null);
+			}
 		}
 		// Recursion so it paints until the program is stopped (repaint just calls this
 		// again)
 		repaint();
-	}// Paint
+	}//paint
 
 	/**
 	 * 
@@ -125,7 +129,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public void add(ScreenElement se) {
 		elements.add(se);
 		repaint();
-	}// add
+	}//add
 
 	/**
 	 * Replaces the ScreenElement in the elements ArrayList of the index provided
@@ -138,7 +142,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public void replace(ScreenElement se, int index) {
 		elements.set(index, se);
 		repaint();
-	}// replace
+	}//replace
 
 	/**
 	 * Gets the x and y of the mouse then calls whatClicked
@@ -150,7 +154,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 		int mouseX = e.getX();
 		int mouseY = e.getY();
 		whatClicked(mouseX, mouseY);
-	}// mouseReleased
+	}//mouseReleased
 
 	/**
 	 * Loops through every element in the array and if the mouseX and mouseY are
@@ -175,7 +179,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 				}
 			}
 		}
-	}// whatClicked
+	}//whatClicked
 
 	/**
 	 * Gets the id of the last clicked ScreenElement, and sets newClick to false
@@ -185,7 +189,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public String getLastClick() {
 		newClick = false;
 		return lastClick;
-	}// getLastClick
+	}//getLastClick
 
 	/**
 	 * 
@@ -193,7 +197,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 */
 	public Object getLastClickObject() {
 		return lastClickObject;
-	}// getLastClickObject
+	}//getLastClickObject
 
 	/**
 	 * 
@@ -201,7 +205,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 */
 	public boolean isNewClick() {
 		return newClick;
-	}// isNewClick
+	}//isNewClick
 
 	/**
 	 * Gets the index in the ArrayList elements of whatever id is given
@@ -219,7 +223,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 			}
 		}
 		return index;
-	}// getIndex
+	}//getIndex
 
 	/**
 	 * @param id The id to get the ScreenElement of
@@ -228,7 +232,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public ScreenElement getScreenElement(String id) {
 		int index = getIndex(id);
 		return elements.get(index);
-	}
+	}//getScreenElement
 
 	/**
 	 * Saves the ArrayList elements to the given directory
@@ -238,7 +242,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public void saveElements(String file) {
 		ScreenFile io = new ScreenFile();
 		io.writeArrayList(elements, file);
-	}
+	}//saveElements
 
 	/**
 	 * Reads the ArrayList elements to from given directory
@@ -248,22 +252,31 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public void loadElements(String file) {
 		ScreenFile io = new ScreenFile();
 		elements = io.readArrayList(file);
-	}
+	}//loadElements
 
 	/**
 	 * Removes every item from the ArrayList elements, thus making the screen black
 	 */
 	public void clearScreen() {
 		elements.clear();
-	}
+	}//clearScreen
 
+	/**
+	 * Sets the background color of the window
+	 * @param color The color to set the background to
+	 */
+	public void setBackgroundColor(Color color) {
+		backgroundColor = color;
+		repaint();
+	}//setBackgroundColor
+	
 	/**
 	 * 
 	 * @return An array of each possible letter, and if it is currently pressed or not
 	 */
 	public boolean[] getKeyboard() {
 		return keyboard;
-	}
+	}//getKeyboard
 
 	// The following methods are just here to appease MouseListener and
 	// ActionListener

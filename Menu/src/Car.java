@@ -3,11 +3,11 @@ import java.awt.image.BufferedImage;;
 /**
  * The object for any car on the screen, including the player
  * 
- * @version January 14, 2021
+ * @version January 16, 2021
  * @author Riley Power
  */
 public class Car extends ScreenElement {
-	BufferedImage image;
+	private BufferedImage image;
 
 	/**
 	 * 
@@ -20,7 +20,7 @@ public class Car extends ScreenElement {
 	public Car(int x, int y, String id, BufferedImage image) {
 		super(x, y, id);
 		this.image = image;
-	}
+	}//Car
 
 	/**
 	 * 
@@ -28,12 +28,12 @@ public class Car extends ScreenElement {
 	 */
 	public void setImage(BufferedImage image) {
 		this.image = image;
-	}
+	}//setImage
 
 	/**
 	 * @return Returns the image to represent the car on screen
 	 */
 	public BufferedImage getImage() {
 		return image;
-	}
-}
+	}//getImage
+}//Car

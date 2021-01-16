@@ -91,4 +91,4 @@ public class ScreenFile {
 		}
 		return array;
 	}// readArrayList
-}
+}//ScreenFile

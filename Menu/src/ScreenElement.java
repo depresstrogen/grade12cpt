@@ -22,7 +22,7 @@ public class ScreenElement implements Serializable {
 		this.x = x;
 		this.y = y;
 		this.id = id;
-	}
+	}//ScreenElement
 
 	/**
 	 * 
@@ -30,7 +30,7 @@ public class ScreenElement implements Serializable {
 	 */
 	public int getX() {
 		return x;
-	}
+	}//getX
 
 	/**
 	 * 
@@ -38,7 +38,7 @@ public class ScreenElement implements Serializable {
 	 */
 	public int getY() {
 		return y;
-	}
+	}//getY
 
 	/**
 	 * 
@@ -46,7 +46,7 @@ public class ScreenElement implements Serializable {
 	 */
 	public String getID() {
 		return id;
-	}
+	}//getID
 
 	/**
 	 * 
@@ -55,7 +55,7 @@ public class ScreenElement implements Serializable {
 
 	public void setX(int x) {
 		this.x = x;
-	}
+	}//setX
 
 	/**
 	 * 
@@ -63,7 +63,7 @@ public class ScreenElement implements Serializable {
 	 */
 	public void setY(int y) {
 		this.y = y;
-	}
+	}//setY
 
 	/**
 	 * 
@@ -71,5 +71,5 @@ public class ScreenElement implements Serializable {
 	 */
 	public void setID(String id) {
 		this.id = id;
-	}
-}
+	}//setID
+}//ScreenElement
