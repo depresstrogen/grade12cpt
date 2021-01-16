@@ -29,12 +29,12 @@ public class MouseHandler {
 
 			case "mainMenu1":
 				button = (Button) screen.getLastClickObject();
-				screen.loadElements("sub.menu");
+				screen.loadElements("Menu Files/sub.menu");
 				break;
 
 			case "mainMenu2":
 				button = (Button) screen.getLastClickObject();
-				text = (Text) screen.getScreenElement("mm2t");
+				text = (Text) screen.getScreenElement("mm2Text");
 				if (button.getColor().equals(Color.RED)) {
 					button.setColor(Color.ORANGE);
 					text.setText("Orange");
@@ -76,7 +76,7 @@ public class MouseHandler {
 
 			case "subMenu1":
 				// Starts the game on a new thread
-				screen.loadElements("loading.menu");
+				screen.loadElements("Menu Files/loading.menu");
 				Thread thread = new Thread() {
 					public void run() {
 						game.start(screen);
@@ -88,7 +88,7 @@ public class MouseHandler {
 
 			case "subMenu4":
 				button = (Button) screen.getLastClickObject();
-				screen.loadElements("main.menu");
+				screen.loadElements("Menu Files/main.menu");
 				break;
 			}
 		}

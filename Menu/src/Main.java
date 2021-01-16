@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 /**
  * This is the file that loads the game
  * 
@@ -12,6 +14,6 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Screen screen = new Screen(1000, 700);
-		screen.loadElements("main.menu");
+		screen.loadElements("Menu Files/main.menu");
 	}//main
 }//Main

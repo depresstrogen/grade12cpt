@@ -1,4 +1,4 @@
-		Picture loadgif = new Picture(20,500,"loadgif","loading.gif");
+		Picture loadgif = new Picture(20,500,"loadgif","Image Files/loading.gif");
 		screen.add(loadgif);
 		
 		Text loading = new Text(180, 600, 100, "Loading...", "loadtext");

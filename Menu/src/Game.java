@@ -28,11 +28,11 @@ public class Game {
 	// Global version of car object, not necessary but its easier to use this as a
 	// unrotated version of the image
 	private Car car;
-	//Images used by the game
+	// Images used by the game
 	private BufferedImage carPic;
 	private BufferedImage collision;
 	private BufferedImage backgroundImage;
-	//The height and width of the background layer
+	// The height and width of the background layer
 	private int bkgWidth;
 	private int bkgHeight;
 
@@ -43,43 +43,43 @@ public class Game {
 	 * @param screen The screen to paint everything to
 	 */
 	synchronized void start(Screen screen) {
-		//Load Images
+		// Load Images
 		try {
-			carPic = ImageIO.read(new File("testcar.png"));
-			collision = ImageIO.read(new File("collision.png"));
-			backgroundImage = ImageIO.read(new File("map.png"));
+			carPic = ImageIO.read(new File("Image Files/redcar.png"));
+			collision = ImageIO.read(new File("Map Files/collision.png"));
+			backgroundImage = ImageIO.read(new File("Map Files/map.png"));
 		} catch (Exception e) {
 		}
-		//Frame rate of game
+		// Frame rate of game
 		int fps = 60;
 		long fpsTime = System.currentTimeMillis();
-		//Removes the menu elements
+		// Removes the menu elements
 		screen.clearScreen();
-		//Declares Objects
+		// Declares Objects
 		car = new Car(2, (screen.getHeight() / 2) - (carPic.getHeight() / 2), "Player", carPic);
 		Background background = new Background((int) (0 - playerX), (int) (0 - playerY), "background", backgroundImage);
 		Car car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
 				(screen.getHeight() / 2) - (carPic.getHeight() / 2), "Player", carPic);
-		//Adds images to the screen
+		// Adds images to the screen
 		screen.add(background);
 		screen.add(car);
-		//Declares height and width to speed things up later
+		// Declares height and width to speed things up later
 		bkgWidth = background.getImage().getWidth();
 		bkgHeight = background.getImage().getHeight();
 		// Commits the changes to the screen
 		screen.repaint();
-		//Main game loop
+		// Main game loop
 		while (true) {
-			//Declare the next frame time
+			// Declare the next frame time
 			fpsTime = System.currentTimeMillis() + (1000 / fps);
 			while (System.currentTimeMillis() < fpsTime) {
 				// To do as fast as possible if anything
-				//If nothing here it just waits until the next frame is needed
+				// If nothing here it just waits until the next frame is needed
 			}
-			//Get inputs and check collision
+			// Get inputs and check collision
 			keyboardInputs(screen.getKeyboard());
 			checkCollision(car);
-			//Gets the background object from the elements array instead of the local one
+			// Gets the background object from the elements array instead of the local one
 			Background bkg = (Background) screen.getScreenElement("background");
 			// Shifts background instead of player
 			bkg.setX((int) (0 - playerX));
@@ -90,7 +90,7 @@ public class Game {
 			screen.replace(bkg, screen.getIndex("background"));
 			screen.replace(car, screen.getIndex("Player"));
 		}
-	}//start
+	}// start
 
 	/**
 	 * Rotates the car image
@@ -106,7 +106,7 @@ public class Game {
 		// Applies Filtering to the image so the pixels don't look jumpy
 		BufferedImage rotatedImage = filter.filter(img, null);
 		return rotatedImage;
-	}//rotateImage
+	}// rotateImage
 
 	/**
 	 * Processes keyboard inputs and calculates player movement
@@ -153,7 +153,7 @@ public class Game {
 			playerY -= playerDY * carSpeed;
 		}
 
-	}//keyboardInputs
+	}// keyboardInputs
 
 	/**
 	 * Checks if the car is out of bounds, or in a pink area on the collision map
@@ -262,5 +262,5 @@ public class Game {
 		// use
 		playerX = centerX - shiftX - (imageWidth / 2);
 		playerY = centerY - shiftY - (imageHeight / 2);
-	}//checkCollision
-}//Game
+	}// checkCollision
+}// Game

@@ -1,4 +1,4 @@
-		Button option1 = new Button(0, 250, 70, 600, Color.RED, "mainMenu1");
+Button option1 = new Button(0, 250, 70, 600, Color.RED, "mainMenu1");
 		Button option2 = new Button(0, 350, 70, 600, Color.RED, "mainMenu2");
 		Button option3 = new Button(0, 450, 70, 600, Color.RED, "mainMenu3");
 		Button option4 = new Button(0, 550, 70, 600, Color.RED, "mainMenu4");
@@ -22,7 +22,7 @@
 		screen.add(option4Text);
 		screen.add(watermark);
 
-		Picture penguin = new Picture(750, 60, "pengu", "penguinDance.gif");
+		Picture penguin = new Picture(750, 60, "pengu", "Image Files/penguinDance.gif");
 		screen.add(penguin);
 		
 		screen.saveElements("main.menu");

@@ -33,7 +33,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 * @param width  How many pixels wide the window will be
 	 */
 	public Screen(int height, int width) {
-		Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");
+		Image icon = Toolkit.getDefaultToolkit().getImage("Image Files/icon.png");
 
 		frame = new JFrame("Screen");
 		frame.add(this);
