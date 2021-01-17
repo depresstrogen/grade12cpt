@@ -114,7 +114,8 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 			}
 			if (elements.get(i) instanceof Background) {
 				Background bkg = (Background) elements.get(i);
-				g2d.drawImage(bkg.getImage(), bkg.getX(), bkg.getY(), null);
+				g2d.drawImage(bkg.getImage(), bkg.getX(), bkg.getY(),bkg.getImage().getHeight(null) * bkg.getScaleFactor(),bkg.getImage().getWidth(null) * bkg.getScaleFactor(), null);
+				
 			}
 		}
 		// Recursion so it paints until the program is stopped (repaint just calls this

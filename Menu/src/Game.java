@@ -31,11 +31,11 @@ public class Game {
 	// Images used by the game
 	private BufferedImage carPic;
 	private BufferedImage collision;
-	private BufferedImage backgroundImage;
+	private Image backgroundImage;
 	// The height and width of the background layer
 	private int bkgWidth;
 	private int bkgHeight;
-
+	private int scaleFactor = 4;
 	/**
 	 * The main game loop, starts the game, loads all files and then deals with
 	 * anything to do actually playing the game
@@ -57,15 +57,15 @@ public class Game {
 		screen.clearScreen();
 		// Declares Objects
 		car = new Car(2, (screen.getHeight() / 2) - (carPic.getHeight() / 2), "Player", carPic);
-		Background background = new Background((int) (0 - playerX), (int) (0 - playerY), "background", backgroundImage);
+		Background background = new Background((int) (0 - playerX), (int) (0 - playerY), "background", backgroundImage, scaleFactor);
 		Car car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
 				(screen.getHeight() / 2) - (carPic.getHeight() / 2), "Player", carPic);
 		// Adds images to the screen
 		screen.add(background);
 		screen.add(car);
 		// Declares height and width to speed things up later
-		bkgWidth = background.getImage().getWidth();
-		bkgHeight = background.getImage().getHeight();
+		bkgWidth = background.getImage().getWidth(null);
+		bkgHeight = background.getImage().getHeight(null);
 		// Commits the changes to the screen
 		screen.repaint();
 		// Main game loop
@@ -187,7 +187,7 @@ public class Game {
 			playerLeft = 0;
 			centerX = playerLeft + (imageWidth / 2) - whiteSpace;
 		}
-		if (playerRight > bkgWidth) {
+		if (playerRight > bkgWidth * scaleFactor) {
 			playerRight = bkgWidth;
 			centerX = playerRight - (imageWidth / 2) + whiteSpace;
 		}
@@ -195,7 +195,7 @@ public class Game {
 			playerUp = 0;
 			centerY = playerUp + (imageHeight / 2) - whiteSpace;
 		}
-		if (playerDown > bkgHeight) {
+		if (playerDown > bkgHeight * scaleFactor) {
 			playerDown = bkgHeight;
 			centerY = playerDown - (imageHeight / 2) + whiteSpace;
 		}
