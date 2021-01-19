@@ -7,7 +7,7 @@ import javax.swing.*;
  * Everything to do with drawing the screen, getting mouse movement, and
  * anything to do with the main window is performed in this class
  * 
- * @version January 16, 2021
+ * @version January 18, 2021
  * @author Riley Power
  *
  */
@@ -35,7 +35,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public Screen(int height, int width) {
 		Image icon = Toolkit.getDefaultToolkit().getImage("Image Files/icon.png");
 
-		frame = new JFrame("Screen");
+		frame = new JFrame("Unnamed Street Racing Game | By Riley Power");
 		frame.add(this);
 		frame.setSize(height, width);
 		frame.setIconImage(icon);
@@ -60,6 +60,9 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 				if (e.getKeyCode() == KeyEvent.VK_S) {
 					keyboard['S'] = true;
 				}
+				if (e.getKeyCode() == KeyEvent.VK_R) {
+					keyboard['R'] = true;
+				}
 			}
 
 			public void keyReleased(KeyEvent e) {
@@ -74,6 +77,9 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 				}
 				if (e.getKeyCode() == KeyEvent.VK_S) {
 					keyboard['S'] = false;
+				}
+				if (e.getKeyCode() == KeyEvent.VK_R) {
+					keyboard['R'] = false;
 				}
 			}
 		});
@@ -115,6 +121,22 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 			if (elements.get(i) instanceof Background) {
 				Background bkg = (Background) elements.get(i);
 				g2d.drawImage(bkg.getImage(), bkg.getX(), bkg.getY(),bkg.getImage().getHeight(null) * bkg.getScaleFactor(),bkg.getImage().getWidth(null) * bkg.getScaleFactor(), null);
+				
+			}
+			if (elements.get(i) instanceof Checkpoint) {
+				Checkpoint cpt = (Checkpoint) elements.get(i);
+				switch (cpt.getType()) {
+				case "Start":
+					g2d.setColor(Color.GREEN);
+					break;
+				case "CP":
+					g2d.setColor(Color.YELLOW);
+					break;
+				case "Finish":
+					g2d.setColor(Color.RED);
+					break;
+				}
+				g2d.fillRect(cpt.getX(), cpt.getY(), cpt.getHeight(), cpt.getWidth());
 				
 			}
 		}

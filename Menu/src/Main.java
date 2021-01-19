@@ -1,10 +1,10 @@
 /**
- * This is the file that loads the game
+ * This is the file that loads the game AKA the client class
  * 
  * This program can ONLY be launched in eclipse, it will NOT compile in Dr. Java
  * or if it does there will be unintended glitches
  * 
- * @version January 14, 2021
+ * @version January 18, 2021
  * @author Riley Power
  *
  */

@@ -7,10 +7,10 @@ import java.awt.Image;
  * @author Riley Power
  */
 public class Background extends ScreenElement {
-	Image image;
-	int scaleFactor;
+	private Image image;
+	private int scaleFactor;
 	/**
-	 * 
+	 * Constructor Method for the background class
 	 * @param x     The x coordinate of the background (Top Left)
 	 * @param y     The y coordinate of the background (Top Left)
 	 * @param id    The id of the background used to identify it from an ArrayList
@@ -23,7 +23,7 @@ public class Background extends ScreenElement {
 	}//Background
 
 	/**
-	 * 
+	 * Sets the background image to be the given image
 	 * @param image The image to be displayed to represent the car
 	 */
 	public void setImage(Image image) {
@@ -37,6 +37,10 @@ public class Background extends ScreenElement {
 		return image;
 	}//getImage
 	
+	/**
+	 * Returns the scale factor (how much to enlarge or shrink the image) 
+	 * @return Returns the image's scale factor
+	 */
 	public int getScaleFactor() {
 		return scaleFactor;
 	}//getScaleFactor
