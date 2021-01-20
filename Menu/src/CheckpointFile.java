@@ -19,24 +19,19 @@ import java.util.Scanner;
  *
  */
 public class CheckpointFile {
-	FileReader in;
-	BufferedReader readFile;
-	String lineOfText;
-	String scoreNameParsed;
-	static String top5Names[] = new String[5];
-	static int top5Scores[] = new int[5];
-
-	
 	/**
 	 * Loads a .race file into a Checkpoint array list and returns it
 	 * @return An array with every checkpoint in the specified race
 	 */
 	public ArrayList<Checkpoint> readCheckpoints() {
+		FileReader in;
+		BufferedReader readFile;
+		String lineOfText;
 		ArrayList<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
 		int x1 = 0;
 		int x2 = 0;
-		int y1 = 1;
-		int y2 = 2;
+		int y1 = 0;
+		int y2 = 0;
 		String type = "";
 		File checkpointFile = new File("Race Files/race1.race");
 		try {

@@ -22,6 +22,7 @@ public class ScreenFile {
 	 */
 	public void writeArrayList(ArrayList<ScreenElement> array, String directory) {
 		try {
+
 			// ObjectOutputStream basically puts all of the raw data in one file
 			FileOutputStream fileOut = new FileOutputStream(directory);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
@@ -30,6 +31,7 @@ public class ScreenFile {
 			// Memory leaks are not cool
 			objectOut.close();
 			fileOut.close();
+
 			// Prints everything that saved for debugging purposes
 			for (int i = 0; i < array.size(); i++) {
 				ScreenElement element = (ScreenElement) array.get(i);
@@ -47,7 +49,7 @@ public class ScreenFile {
 			System.out.println("ArrayList saved to " + directory);
 			// Everything has a catch
 		} catch (Exception e) {
-			System.err.println("IOExeption: " + e.getMessage());
+			System.err.println("Exception: " + e.getMessage());
 		}
 	}// writeArrayList
 
@@ -87,8 +89,8 @@ public class ScreenFile {
 		} catch (Exception e) {
 			// Gotta make array equal something if its going to be returned
 			array = new ArrayList<ScreenElement>();
-			System.err.println("IOExeption: " + e.getMessage());
+			System.err.println("Exception: " + e.getMessage());
 		}
 		return array;
 	}// readArrayList
-}//ScreenFile
+}// ScreenFile

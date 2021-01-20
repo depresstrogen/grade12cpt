@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
  * world such as - Keyboard Input - Player Movement - Background Movement -
  * Modifying Player Images - Checkpoint Handling
  * 
- * @version January 18, 2021
+ * @version January 19, 2021
  * @author Riley Power
  */
 public class Game {
@@ -37,10 +37,14 @@ public class Game {
 	// The height and width of the background layer
 	private int bkgWidth;
 	private int bkgHeight;
+	// How much smaller the displayed image is than the collision map
 	private int scaleFactor = 4;
+	// Used for when race starts
 	private int currentCheckpoint = 0;
-
-	ArrayList<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
+	private ArrayList<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
+	// Used for the music interface
+	private MusicInterface jukebox = new MusicInterface();
+	private boolean musicOn = false;
 
 	/**
 	 * The main game loop, starts the game, loads all files and then deals with
@@ -75,6 +79,7 @@ public class Game {
 		bkgWidth = background.getImage().getWidth(null);
 		bkgHeight = background.getImage().getHeight(null);
 
+		// Adds Checkpoints
 		startRace(screen, false);
 		updateCheckpoints(screen);
 
@@ -91,6 +96,7 @@ public class Game {
 			// Get inputs and check collision
 			keyboardInputs(screen.getKeyboard(), screen);
 			checkCollision(car);
+			// Checks if a checkpoint is hit
 			updateCheckpoints(screen);
 			// Gets the background object from the elements array instead of the local one
 			Background bkg = (Background) screen.getScreenElement("background");
@@ -103,14 +109,14 @@ public class Game {
 			screen.replace(bkg, screen.getIndex("background"));
 			screen.replace(car, screen.getIndex("Player"));
 		}
-	}//start
+	}// start
 
 	/**
 	 * Rotates the car image
 	 * 
 	 * @return The rotated version of the image
 	 */
-	public BufferedImage rotateImage() {
+	private BufferedImage rotateImage() {
 		BufferedImage img = car.getImage();
 		// Applies Rotation to image, pivoting at the center of the image
 		AffineTransform rotate = AffineTransform.getRotateInstance(playerAngle, img.getWidth() / 2, img.getWidth() / 2);
@@ -127,12 +133,13 @@ public class Game {
 	 * @param keyboard An array with every possible key, and whether it is pressed
 	 *                 or not
 	 */
-	public void keyboardInputs(boolean[] keyboard, Screen screen) {
+	private void keyboardInputs(boolean[] keyboard, Screen screen) {
 		boolean left = keyboard['A'];
 		boolean right = keyboard['D'];
 		boolean up = keyboard['W'];
 		boolean down = keyboard['S'];
 		boolean restart = keyboard['R'];
+		boolean music = keyboard['T'];
 		// Turn left and right
 		if (left) {
 			playerAngle -= 0.1;
@@ -146,7 +153,7 @@ public class Game {
 		// Amount to move on X with your current angle
 		playerDY = Math.sin(playerAngle);
 
-		// Radians are horrible you gotta make sure its not over 360 degrees
+		// Radians are horrible
 		if (playerAngle < 0) {
 			playerAngle += Math.PI * 2;
 		}
@@ -166,12 +173,21 @@ public class Game {
 			playerY -= playerDY * carSpeed;
 		}
 
-		// Debug checkpoint hitboxes
+		// Debug checkpoint hit boxes
 		if (restart) {
 			startRace(screen, true);
 		}
 
-	}//keyboardInputs
+		// Activates music menu
+		if (music && !musicOn) {
+			jukebox.startInterface(screen);
+			musicOn = true;
+		} else if (!music && musicOn) {
+			jukebox.hideInterface(screen);
+			musicOn = false;
+		}
+
+	}// keyboardInputs
 
 	/**
 	 * Checks if the car is out of bounds, or in a pink area on the collision map
@@ -179,7 +195,8 @@ public class Game {
 	 * 
 	 * @param car The car to check collision on
 	 */
-	public void checkCollision(Car car) {
+	private void checkCollision(Car car) {
+		// All walls are this exact RGB value
 		int pinkValue = -65281;
 
 		int shiftX = 420;
@@ -284,10 +301,12 @@ public class Game {
 
 	/**
 	 * Loads details of the race into memory, and adds the checkpoints to the screen
-	 * @param screen The screen which the race will take place
-	 * @param replace If it is a new race or if its just replacing the elements (useful for adjusting hit boxes on checkpoints)
+	 * 
+	 * @param screen  The screen which the race will take place
+	 * @param replace If it is a new race or if its just replacing the elements
+	 *                (useful for adjusting hit boxes on checkpoints)
 	 */
-	public void startRace(Screen screen, boolean replace) {
+	private void startRace(Screen screen, boolean replace) {
 		CheckpointFile cpf = new CheckpointFile();
 		ArrayList<Checkpoint> checkpoints = cpf.readCheckpoints();
 		this.checkpoints = checkpoints;
@@ -301,7 +320,7 @@ public class Game {
 			}
 		}
 		currentCheckpoint = 0;
-	}//startRace
+	}// startRace
 
 	/**
 	 * Moves the checkpoint boxes to be in line with the screen, and checks for
@@ -309,7 +328,7 @@ public class Game {
 	 * 
 	 * @param screen The screen to draw the checkpoints on
 	 */
-	public void updateCheckpoints(Screen screen) {
+	private void updateCheckpoints(Screen screen) {
 		int imageWidth = car.getImage().getWidth();
 		int imageHeight = car.getImage().getHeight();
 		double centerX = playerX + 420 + (imageWidth / 2);
@@ -320,7 +339,7 @@ public class Game {
 			Checkpoint cpt = new Checkpoint(checkpoints.get(i).getX(), checkpoints.get(i).getY(),
 					checkpoints.get(i).getWidth(), checkpoints.get(i).getHeight(), checkpoints.get(i).getID(),
 					checkpoints.get(i).getType());
-			// So you cant hit a checkpoint out of order
+			// So you can't hit a checkpoint out of order
 			if (i == currentCheckpoint) {
 				// Collision Detection
 				if (centerX > cpt.getX() && centerX < (cpt.getX() + cpt.getWidth()) && centerY > cpt.getY()

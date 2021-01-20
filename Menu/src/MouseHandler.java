@@ -5,7 +5,7 @@ import java.util.Stack;
  * Parses every mouse click to avoid clogging the Screen class with all the
  * possible cases
  * 
- * @version January 16, 2020
+ * @version January 19, 2020
  * @author Riley Power
  *
  */
@@ -90,7 +90,12 @@ public class MouseHandler {
 				button = (Button) screen.getLastClickObject();
 				screen.loadElements("Menu Files/main.menu");
 				break;
+
+			case "startMusic":
+				MusicPlayer player = new MusicPlayer();
+				player.play("Music Files/rick.wav");
+				break;
 			}
 		}
-	}//mouseInputs
-}//MouseHandler
+	}// mouseInputs
+}// MouseHandler

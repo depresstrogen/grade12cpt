@@ -26,6 +26,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	// Starts the game but doesn't display it until the start method is called
 	private Game game = new Game();
 	private Color backgroundColor = Color.WHITE;
+
 	/**
 	 * Constructs the jFrame, mouse listener and key listener
 	 * 
@@ -81,10 +82,13 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 				if (e.getKeyCode() == KeyEvent.VK_R) {
 					keyboard['R'] = false;
 				}
+				if (e.getKeyCode() == KeyEvent.VK_T) {
+					keyboard['T'] = !keyboard['T'];
+				}
 			}
 		});
 		addMouseListener(this);
-	}//Screen
+	}// Screen
 
 	/**
 	 * @param g The canvas to paint every object to
@@ -120,8 +124,10 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 			}
 			if (elements.get(i) instanceof Background) {
 				Background bkg = (Background) elements.get(i);
-				g2d.drawImage(bkg.getImage(), bkg.getX(), bkg.getY(),bkg.getImage().getHeight(null) * bkg.getScaleFactor(),bkg.getImage().getWidth(null) * bkg.getScaleFactor(), null);
-				
+				g2d.drawImage(bkg.getImage(), bkg.getX(), bkg.getY(),
+						bkg.getImage().getHeight(null) * bkg.getScaleFactor(),
+						bkg.getImage().getWidth(null) * bkg.getScaleFactor(), null);
+
 			}
 			if (elements.get(i) instanceof Checkpoint) {
 				Checkpoint cpt = (Checkpoint) elements.get(i);
@@ -137,22 +143,23 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 					break;
 				}
 				g2d.fillRect(cpt.getX(), cpt.getY(), cpt.getHeight(), cpt.getWidth());
-				
+
 			}
 		}
 		// Recursion so it paints until the program is stopped (repaint just calls this
 		// again)
 		repaint();
-	}//paint
+	}// paint
 
 	/**
+	 * Adds the ScreenElement to the elements ArrayList
 	 * 
 	 * @param se Adds the ScreenElement to the elements ArrayList
 	 */
 	public void add(ScreenElement se) {
 		elements.add(se);
 		repaint();
-	}//add
+	}// add
 
 	/**
 	 * Replaces the ScreenElement in the elements ArrayList of the index provided
@@ -165,7 +172,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public void replace(ScreenElement se, int index) {
 		elements.set(index, se);
 		repaint();
-	}//replace
+	}// replace
 
 	/**
 	 * Gets the x and y of the mouse then calls whatClicked
@@ -177,7 +184,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 		int mouseX = e.getX();
 		int mouseY = e.getY();
 		whatClicked(mouseX, mouseY);
-	}//mouseReleased
+	}// mouseReleased
 
 	/**
 	 * Loops through every element in the array and if the mouseX and mouseY are
@@ -188,7 +195,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 * @param mouseY the y coordinate you would like to check for a clickable object
 	 * @see MouseHandler
 	 */
-	public void whatClicked(int mouseX, int mouseY) {
+	private void whatClicked(int mouseX, int mouseY) {
 		System.out.println(mouseX + " " + mouseY);
 		for (int i = 0; i < elements.size(); i++) {
 			if (elements.get(i) instanceof Button) {
@@ -202,7 +209,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 				}
 			}
 		}
-	}//whatClicked
+	}// whatClicked
 
 	/**
 	 * Gets the id of the last clicked ScreenElement, and sets newClick to false
@@ -212,7 +219,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public String getLastClick() {
 		newClick = false;
 		return lastClick;
-	}//getLastClick
+	}// getLastClick
 
 	/**
 	 * 
@@ -220,7 +227,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 */
 	public Object getLastClickObject() {
 		return lastClickObject;
-	}//getLastClickObject
+	}// getLastClickObject
 
 	/**
 	 * 
@@ -228,7 +235,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 */
 	public boolean isNewClick() {
 		return newClick;
-	}//isNewClick
+	}// isNewClick
 
 	/**
 	 * Gets the index in the ArrayList elements of whatever id is given
@@ -246,7 +253,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 			}
 		}
 		return index;
-	}//getIndex
+	}// getIndex
 
 	/**
 	 * @param id The id to get the ScreenElement of
@@ -255,7 +262,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public ScreenElement getScreenElement(String id) {
 		int index = getIndex(id);
 		return elements.get(index);
-	}//getScreenElement
+	}// getScreenElement
 
 	/**
 	 * Saves the ArrayList elements to the given directory
@@ -265,7 +272,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public void saveElements(String file) {
 		ScreenFile io = new ScreenFile();
 		io.writeArrayList(elements, file);
-	}//saveElements
+	}// saveElements
 
 	/**
 	 * Reads the ArrayList elements to from given directory
@@ -275,31 +282,33 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public void loadElements(String file) {
 		ScreenFile io = new ScreenFile();
 		elements = io.readArrayList(file);
-	}//loadElements
+	}// loadElements
 
 	/**
 	 * Removes every item from the ArrayList elements, thus making the screen black
 	 */
 	public void clearScreen() {
 		elements.clear();
-	}//clearScreen
+	}// clearScreen
 
 	/**
 	 * Sets the background color of the window
+	 * 
 	 * @param color The color to set the background to
 	 */
 	public void setBackgroundColor(Color color) {
 		backgroundColor = color;
 		repaint();
-	}//setBackgroundColor
-	
+	}// setBackgroundColor
+
 	/**
 	 * 
-	 * @return An array of each possible letter, and if it is currently pressed or not
+	 * @return An array of each possible letter, and if it is currently pressed or
+	 *         not
 	 */
 	public boolean[] getKeyboard() {
 		return keyboard;
-	}//getKeyboard
+	}// getKeyboard
 
 	// The following methods are just here to appease MouseListener and
 	// ActionListener

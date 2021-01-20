@@ -14,6 +14,7 @@ public class ScreenElement implements Serializable {
 	private String id;
 
 	/**
+	 * ScreenElement Constructor
 	 * 
 	 * @param x  The x coordinate of the item on screen (Top Left)
 	 * @param y  The y coordinate of the item on screen (Top Left)
