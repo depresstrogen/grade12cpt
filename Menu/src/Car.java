@@ -1,7 +1,7 @@
 import java.awt.image.BufferedImage;;
 
 /**
- * The object for any car on the screen, including the player
+ * The object for any car on the screen, including the player and AI
  * 
  * @version January 20, 2021
  * @author Riley Power
