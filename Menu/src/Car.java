@@ -14,7 +14,6 @@ public class Car extends ScreenElement {
 	private double playerAngle;
 
 	/**
-	 * 
 	 * @param x       The x coordinate of the item on screen (Top Left)
 	 * @param y       The y coordinate of the item on screen (Top Left)
 	 * @param playerX the x coordinate the player is on the map

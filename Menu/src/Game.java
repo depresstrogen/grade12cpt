@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 /**
  * This class contains everything that is needed for the actual game and its
  * world such as - Keyboard Input - Player Movement - Background Movement -
- * Modifying Player Images - Checkpoint Handling
+ * Modifying Player Images - Checkpoint Handling - AI
  * 
  * @version January 20, 2021
  * @author Riley Power
