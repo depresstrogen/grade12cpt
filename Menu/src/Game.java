@@ -13,23 +13,14 @@ import javax.imageio.ImageIO;
  * world such as - Keyboard Input - Player Movement - Background Movement -
  * Modifying Player Images - Checkpoint Handling
  * 
- * @version January 19, 2021
+ * @version January 20, 2021
  * @author Riley Power
  */
 public class Game {
-	// Coordinates of player
-	private double playerX = 5500;
-	private double playerY = 9420;
-	// Total player angle
-	private double playerAngle = 0;
-	// X and Y angle of player separated
-	private double playerDX;
-	private double playerDY;
 	// Speed multiplier of car
 	private int carSpeed = 10;
 	// Global version of car object, not necessary but its easier to use this as a
 	// unrotated version of the image
-	private Car car;
 	// Images used by the game
 	private BufferedImage carPic;
 	private BufferedImage collision;
@@ -67,11 +58,10 @@ public class Game {
 		// Removes the menu elements
 		screen.clearScreen();
 		// Declares Objects
-		car = new Car(2, (screen.getHeight() / 2) - (carPic.getHeight() / 2), "Player", carPic);
-		Background background = new Background((int) (0 - playerX), (int) (0 - playerY), "background", backgroundImage,
-				scaleFactor);
 		Car car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
-				(screen.getHeight() / 2) - (carPic.getHeight() / 2), "Player", carPic);
+				(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500 ,9420, "Player", carPic);
+		Background background = new Background((int) (0 - car.getPlayerX()), (int) (0 - car.getPlayerY()), "background", backgroundImage,
+				scaleFactor);
 		// Adds images to the screen
 		screen.add(background);
 		screen.add(car);
@@ -81,7 +71,7 @@ public class Game {
 
 		// Adds Checkpoints
 		startRace(screen, false);
-		updateCheckpoints(screen);
+		updateCheckpoints(screen, car);
 
 		// Commits the changes to the screen
 		screen.repaint();
@@ -94,17 +84,22 @@ public class Game {
 				// If nothing here it just waits until the next frame is needed
 			}
 			// Get inputs and check collision
-			keyboardInputs(screen.getKeyboard(), screen);
+			keyboardInputs(screen.getKeyboard(), screen, car);
 			checkCollision(car);
 			// Checks if a checkpoint is hit
-			updateCheckpoints(screen);
+			updateCheckpoints(screen, car);
 			// Gets the background object from the elements array instead of the local one
 			Background bkg = (Background) screen.getScreenElement("background");
 			// Shifts background instead of player
-			bkg.setX((int) (0 - playerX));
-			bkg.setY((int) (0 - playerY));
+			bkg.setX((int) (0 - car.getPlayerX()));
+			bkg.setY((int) (0 - car.getPlayerY()));
 			// Rotates car
-			car.setImage(rotateImage());
+			car.setImage(rotateImage(car));
+			
+			
+			//teslaMode(car);
+			
+			
 			// Applies new background and rotated car to screen
 			screen.replace(bkg, screen.getIndex("background"));
 			screen.replace(car, screen.getIndex("Player"));
@@ -116,10 +111,10 @@ public class Game {
 	 * 
 	 * @return The rotated version of the image
 	 */
-	private BufferedImage rotateImage() {
-		BufferedImage img = car.getImage();
+	private BufferedImage rotateImage(Car car) {
+		BufferedImage img = car.getUnrotatedImage();
 		// Applies Rotation to image, pivoting at the center of the image
-		AffineTransform rotate = AffineTransform.getRotateInstance(playerAngle, img.getWidth() / 2, img.getWidth() / 2);
+		AffineTransform rotate = AffineTransform.getRotateInstance(car.getPlayerAngle(), img.getWidth() / 2, img.getWidth() / 2);
 		// Makes Filter
 		AffineTransformOp filter = new AffineTransformOp(rotate, AffineTransformOp.TYPE_BILINEAR);
 		// Applies Filtering to the image so the pixels don't look jumpy
@@ -133,44 +128,46 @@ public class Game {
 	 * @param keyboard An array with every possible key, and whether it is pressed
 	 *                 or not
 	 */
-	private void keyboardInputs(boolean[] keyboard, Screen screen) {
+	private void keyboardInputs(boolean[] keyboard, Screen screen, Car car) {
 		boolean left = keyboard['A'];
 		boolean right = keyboard['D'];
 		boolean up = keyboard['W'];
 		boolean down = keyboard['S'];
 		boolean restart = keyboard['R'];
 		boolean music = keyboard['T'];
+		double playerDX;
+		double playerDY;
 		// Turn left and right
 		if (left) {
-			playerAngle -= 0.1;
+			car.setPlayerAngle(car.getPlayerAngle() - 0.1);
 		}
 		if (right) {
-			playerAngle += 0.1;
+			car.setPlayerAngle(car.getPlayerAngle() + 0.1);
 		}
 
 		// Amount to move on X with your current angle
-		playerDX = Math.cos(playerAngle);
+		playerDX = Math.cos(car.getPlayerAngle());
 		// Amount to move on X with your current angle
-		playerDY = Math.sin(playerAngle);
+		playerDY = Math.sin(car.getPlayerAngle());
 
 		// Radians are horrible
-		if (playerAngle < 0) {
-			playerAngle += Math.PI * 2;
+		if (car.getPlayerAngle() < 0) {
+			car.setPlayerAngle(car.getPlayerAngle() + (Math.PI * 2));
 		}
-		if (playerAngle > Math.PI * 2) {
-			playerAngle -= Math.PI * 2;
+		if (car.getPlayerAngle() > Math.PI * 2) {
+			car.setPlayerAngle(car.getPlayerAngle() - (Math.PI * 2));
 		}
 
 		if (up) {
 			// Grade 11 Functions coming in clutch
 			// Angle * Multiplier = Coordinate
-			playerX += playerDX * carSpeed;
-			playerY += playerDY * carSpeed;
+			car.setPlayerX(car.getPlayerX() + playerDX * carSpeed);
+			car.setPlayerY(car.getPlayerY() + playerDY * carSpeed);
 		}
 		if (down) {
 			// Angle * Multiplier = Coordinate
-			playerX -= playerDX * carSpeed;
-			playerY -= playerDY * carSpeed;
+			car.setPlayerX(car.getPlayerX() - playerDX * carSpeed);
+			car.setPlayerY(car.getPlayerY() - playerDY * carSpeed);
 		}
 
 		// Debug checkpoint hit boxes
@@ -208,8 +205,8 @@ public class Game {
 		// The amount of whitespace on the sides of the car image
 		int whiteSpace = 38;
 		// Center of image
-		double centerX = playerX + shiftX + (imageWidth / 2);
-		double centerY = playerY + shiftY + (imageHeight / 2);
+		double centerX = car.getPlayerX() + shiftX + (imageWidth / 2);
+		double centerY = car.getPlayerY() + shiftY + (imageHeight / 2);
 		// Y Axis, top and bottom of car
 		double playerUp = centerY - (imageHeight / 2) + whiteSpace;
 		double playerDown = centerY + (imageHeight / 2) - whiteSpace;
@@ -295,8 +292,8 @@ public class Game {
 		}
 
 		// use
-		playerX = centerX - shiftX - (imageWidth / 2);
-		playerY = centerY - shiftY - (imageHeight / 2);
+		car.setPlayerX(centerX - shiftX - (imageWidth / 2));
+		car.setPlayerY(centerY - shiftY - (imageHeight / 2));
 	}// checkCollision
 
 	/**
@@ -328,12 +325,21 @@ public class Game {
 	 * 
 	 * @param screen The screen to draw the checkpoints on
 	 */
-	private void updateCheckpoints(Screen screen) {
+	private void updateCheckpoints(Screen screen, Car car) {
 		int imageWidth = car.getImage().getWidth();
 		int imageHeight = car.getImage().getHeight();
-		double centerX = playerX + 420 + (imageWidth / 2);
-		double centerY = playerY + 260 + (imageHeight / 2);
+		double centerX = car.getPlayerX() + 420 + (imageWidth / 2);
+		double centerY = car.getPlayerY() + 260 + (imageHeight / 2);
 
+		
+		int whiteSpace = 38;
+		// Y Axis, top and bottom of car
+		double playerUp = centerY - (imageHeight / 2) + whiteSpace;
+		double playerDown = centerY + (imageHeight / 2) - whiteSpace;
+		// X Axis, sides of car
+		double playerLeft = centerX - (imageWidth / 2) + whiteSpace;
+		double playerRight = centerX + (imageWidth / 2) - whiteSpace;
+		
 		for (int i = currentCheckpoint; i < checkpoints.size(); i++) {
 			// Make a exact copy of the current checkpoint
 			Checkpoint cpt = new Checkpoint(checkpoints.get(i).getX(), checkpoints.get(i).getY(),
@@ -342,8 +348,24 @@ public class Game {
 			// So you can't hit a checkpoint out of order
 			if (i == currentCheckpoint) {
 				// Collision Detection
-				if (centerX > cpt.getX() && centerX < (cpt.getX() + cpt.getWidth()) && centerY > cpt.getY()
-						&& centerY < (cpt.getY() + cpt.getHeight())) {
+				//All these booleans here so that they don't go into that if statement making things way too confusing
+				boolean centerInCheckpoint = (centerX > cpt.getX() && centerX < (cpt.getX() + cpt.getHeight()) && centerY > cpt.getY()
+						&& centerY < (cpt.getY() + cpt.getWidth()));
+				
+				boolean topInCheckpoint = (playerRight > cpt.getX() && playerRight < (cpt.getX() + cpt.getHeight()) && playerUp > cpt.getY()
+						&& playerUp < (cpt.getY() + cpt.getWidth()));
+				
+				boolean bottomInCheckpoint = (playerRight > cpt.getX() && playerRight < (cpt.getX() + cpt.getHeight()) && playerDown > cpt.getY()
+						&& playerDown < (cpt.getY() + cpt.getWidth()));
+				
+				boolean leftInCheckpoint = (playerLeft > cpt.getX() && playerLeft < (cpt.getX() + cpt.getHeight()) && playerUp > cpt.getY()
+						&& playerUp < (cpt.getY() + cpt.getWidth()));
+				
+				boolean rightInCheckpoint = (playerLeft > cpt.getX() && playerLeft < (cpt.getX() + cpt.getHeight()) && playerDown > cpt.getY()
+						&& playerDown < (cpt.getY() + cpt.getWidth()));
+				
+				
+				if (centerInCheckpoint || topInCheckpoint || bottomInCheckpoint || leftInCheckpoint || rightInCheckpoint) {
 					currentCheckpoint++;
 					// Replace with dummy value so it doesn't remove the old index
 					Checkpoint dummy = new Checkpoint(0, 0, 0, 0, "blankcp", "blank");
@@ -353,10 +375,38 @@ public class Game {
 				}
 			}
 			// Adjust so it follows the same draw routine as the background
-			cpt.setX((int) (0 - playerX + cpt.getX()));
-			cpt.setY((int) (0 - playerY + cpt.getY()));
+			cpt.setX((int) (0 - car.getPlayerX() + cpt.getX()));
+			cpt.setY((int) (0 - car.getPlayerY() + cpt.getY()));
 			screen.replace(cpt, screen.getIndex(cpt.getID()));
 		}
 		screen.repaint();
 	}// updateCheckpoints
+	
+	/**
+	 * The AI component
+	 * in progress
+	 * So far just is a brick on the gas pedal
+	 * @param car the car to drive
+	 */
+	private void teslaMode(Car car) {
+		//The AI moving
+		double playerDX;
+		double playerDY;
+		// Amount to move on X with your current angle
+		playerDX = Math.cos(car.getPlayerAngle());
+		// Amount to move on X with your current angle
+		playerDY = Math.sin(car.getPlayerAngle());
+		
+		//for each intersection there will be up to 3 possible ways to go and up to 4 directions to approach
+		//load from file each of these
+		//do like a check on a coordinate range if you're there randomize a turn
+		//as you're in the range it should always be safe
+		//maybe auto stop if going to collide with another vehicle?
+		//idk
+		
+		
+		
+		car.setPlayerX(car.getPlayerX() + playerDX * carSpeed);
+		car.setPlayerY(car.getPlayerY() + playerDY * carSpeed);
+	}//teslaMode
 }// Game
