@@ -29,7 +29,6 @@ public class Car extends ScreenElement {
 	}// Car
 
 	/**
-	 * 
 	 * @param image The image to be displayed to represent the car
 	 */
 	public void setImage(BufferedImage image) {
