@@ -1,0 +1,3 @@
+butt.wav
+diamond.wav
+rick.wav
