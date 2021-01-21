@@ -17,6 +17,6 @@ public class Main {
 	public static void main(String[] args) {
 		Screen screen = new Screen(1000, 700);
 		screen.loadElements("Menu Files/main.menu");
-
+		
 	}// main
 }// Main

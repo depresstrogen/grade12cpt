@@ -77,13 +77,13 @@ public class MouseHandler {
 			case "subMenu1":
 				// Starts the game on a new thread
 				screen.loadElements("Menu Files/loading.menu");
-				Thread thread = new Thread() {
+				Thread gameThread = new Thread() {
 					public void run() {
 						game.start(screen);
 						;
 					}
 				};
-				thread.start();
+				gameThread.start();
 				break;
 
 			case "subMenu4":
@@ -93,7 +93,13 @@ public class MouseHandler {
 
 			case "startMusic":
 				MusicPlayer player = new MusicPlayer();
-				player.play("Music Files/rick.wav");
+				Thread musicThread = new Thread() {
+					public void run() {
+						player.shuffle();
+						
+					}
+				};
+				musicThread.start();
 				break;
 			}
 		}
