@@ -14,7 +14,6 @@ import javax.swing.*;
 public class Screen extends JPanel implements ActionListener, MouseListener {
 	private JFrame frame;
 	private ArrayList<ScreenElement> elements = new ArrayList<ScreenElement>();
-	private ArrayList<Object> objects = new ArrayList<Object>();
 	private boolean[] keyboard = new boolean[255];
 	private MouseHandler mouse = new MouseHandler();
 	// The id of the ScreenElement that was last clicked

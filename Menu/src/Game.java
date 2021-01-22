@@ -1,5 +1,4 @@
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -48,7 +47,7 @@ public class Game {
 		try {
 			carPic = ImageIO.read(new File("Image Files/redcar.png"));
 			collision = ImageIO.read(new File("Map Files/collision.png"));
-			backgroundImage = ImageIO.read(new File("Map Files/map.png"));
+			backgroundImage = ImageIO.read(new File("Map Files/gmap.png"));
 		} catch (Exception e) {
 			System.err.println(e);
 		}
@@ -95,9 +94,6 @@ public class Game {
 			bkg.setY((int) (0 - car.getPlayerY()));
 			// Rotates car
 			car.setImage(rotateImage(car));
-			
-			
-			//teslaMode(car);
 			
 			
 			// Applies new background and rotated car to screen
@@ -381,32 +377,4 @@ public class Game {
 		}
 		screen.repaint();
 	}// updateCheckpoints
-	
-	/**
-	 * The AI component
-	 * in progress
-	 * So far just is a brick on the gas pedal
-	 * @param car the car to drive
-	 */
-	private void teslaMode(Car car) {
-		//The AI moving
-		double playerDX;
-		double playerDY;
-		// Amount to move on X with your current angle
-		playerDX = Math.cos(car.getPlayerAngle());
-		// Amount to move on X with your current angle
-		playerDY = Math.sin(car.getPlayerAngle());
-		
-		//for each intersection there will be up to 3 possible ways to go and up to 4 directions to approach
-		//load from file each of these
-		//do like a check on a coordinate range if you're there randomize a turn
-		//as you're in the range it should always be safe
-		//maybe auto stop if going to collide with another vehicle?
-		//idk
-		
-		
-		
-		car.setPlayerX(car.getPlayerX() + playerDX * carSpeed);
-		car.setPlayerY(car.getPlayerY() + playerDY * carSpeed);
-	}//teslaMode
 }// Game

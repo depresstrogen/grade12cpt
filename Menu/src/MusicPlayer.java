@@ -15,7 +15,6 @@ import javax.sound.sampled.*;
  *
  */
 public class MusicPlayer {
-	private boolean songDone;
 	/**
 	 * Plays the specified file through the default speakers
 	 * 
@@ -52,13 +51,11 @@ public class MusicPlayer {
 		BufferedReader readFile;
 		String lineOfText;
 		ArrayList<String> songs = new ArrayList<String>();
-		String type = "";
 		final int numBreaks = 2;
 		File checkpointFile = new File("Music Files/songs.txt");
 		try {
 			in = new FileReader(checkpointFile);
 			readFile = new BufferedReader(in);
-			int i = 0;
 			// Runs until there is nothing left in the file
 			while ((lineOfText = readFile.readLine()) != null) {
 				songs.add("Music Files/" + lineOfText);
@@ -85,7 +82,7 @@ public class MusicPlayer {
 				}
 			}
 			lastBreak = comBreak;
-			songs.add(i * 2, "Music Files/Breaks/radioBreak" + comBreak + ".wav");
+			songs.add(i * 2 + 1, "Music Files/Breaks/radioBreak" + comBreak + ".wav");
 
 		}
 		for (int i = 0; i < songs.size(); i++) {
