@@ -106,8 +106,14 @@ public class MouseHandler {
 				
 				inter.showRaceMenu(screen);
 				break;
+				
 			case "r1Start":
 				game.startRace(screen, "Race Files/race1.race");
+				inter.hideRaceMenu(screen);
+				break;
+				
+			case "r2Start":
+				game.startRace(screen, "Race Files/race2.race");
 				inter.hideRaceMenu(screen);
 				break;
 			}

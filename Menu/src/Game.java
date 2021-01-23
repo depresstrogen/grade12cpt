@@ -36,6 +36,9 @@ public class Game {
 	// Used for the music interface
 	private Interface jukebox = new Interface();
 	private boolean musicOn = false;
+	private boolean raceStarted = false;
+	private boolean raceEnded = false;
+	private double raceTimer = 0;
 	public Car car;
 
 	/**
@@ -57,6 +60,7 @@ public class Game {
 		// Frame rate of game
 		int fps = 60;
 		long fpsTime = System.currentTimeMillis();
+		long timerFadeOut = System.currentTimeMillis() + 5000;
 		// Removes the menu elements
 		screen.clearScreen();
 		// Declares Objects
@@ -96,7 +100,21 @@ public class Game {
 			bkg.setY((int) (0 - car.getPlayerY()));
 			// Rotates car
 			car.setImage(rotateImage(car));
-
+			if (raceStarted) {
+				raceTimer += 1.0 / fps;
+				Text timer = new Text(10,30,30, "" +((int)((int)(raceTimer * 100) / 100.0) / 60) + ":" + (int)(((int)(raceTimer * 100)) % 6000)  / 100.0,"t");
+				screen.replace(timer, screen.getIndex("t"));
+				timerFadeOut = System.currentTimeMillis() + 5000;
+			}
+			if (raceEnded && System.currentTimeMillis() < timerFadeOut) {
+				raceStarted = false;
+				raceTimer = 0;
+			}
+			if (raceEnded && System.currentTimeMillis() > timerFadeOut) {
+				raceEnded = false;
+				ScreenElement dummy = new ScreenElement(0, 0, "dummy");
+				screen.replace(dummy, screen.getIndex("t"));
+			}
 			// Applies new background and rotated car to screen
 			screen.replace(bkg, screen.getIndex("background"));
 			screen.replace(car, screen.getIndex("Player"));
@@ -172,9 +190,11 @@ public class Game {
 		if (music && !musicOn) {
 			jukebox.startInterface(screen);
 			musicOn = true;
+			System.out.println((car.getPlayerX() + 420) + " " + (car.getPlayerY() + 260));
 		} else if (!music && musicOn) {
 			jukebox.hideInterface(screen);
 			musicOn = false;
+			System.out.println((car.getPlayerX() + 420) + " " + (car.getPlayerY() + 260));
 		}
 
 	}// keyboardInputs
@@ -377,6 +397,15 @@ public class Game {
 							square = new Square(squX, squY, 4, 4, "chkpoint", Color.ORANGE);
 						}
 						screen.replace(square, screen.getIndex("chkpoint"));
+					}
+					if (i == 0) {
+						Text timer = new Text(20,20,20, "" + raceTimer,"t");
+						screen.add(timer);
+						raceStarted = true;
+					}
+					if(i + 1 == checkpoints.size()) {
+						System.out.print("end");
+						raceEnded = true;
 					}
 				}
 			}
