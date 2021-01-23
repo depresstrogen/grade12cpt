@@ -14,7 +14,7 @@ import java.util.Scanner;
  * as an example
  * <code> Start 100 100 400 400 </code>
  * 
- * @version January 18, 2021
+ * @version January 23, 2021
  * @author Riley Power
  *
  */
@@ -23,7 +23,7 @@ public class CheckpointFile {
 	 * Loads a .race file into a Checkpoint array list and returns it
 	 * @return An array with every checkpoint in the specified race
 	 */
-	public ArrayList<Checkpoint> readCheckpoints() {
+	public ArrayList<Checkpoint> readCheckpoints(String dir) {
 		FileReader in;
 		BufferedReader readFile;
 		String lineOfText;
@@ -33,7 +33,7 @@ public class CheckpointFile {
 		int y1 = 0;
 		int y2 = 0;
 		String type = "";
-		File checkpointFile = new File("Race Files/race1.race");
+		File checkpointFile = new File(dir);
 		try {
 			in = new FileReader(checkpointFile);
 			readFile = new BufferedReader(in);

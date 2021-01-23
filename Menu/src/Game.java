@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -12,7 +13,7 @@ import javax.imageio.ImageIO;
  * world such as - Keyboard Input - Player Movement - Background Movement -
  * Modifying Player Images - Checkpoint Handling - AI
  * 
- * @version January 20, 2021
+ * @version January 23, 2021
  * @author Riley Power
  */
 public class Game {
@@ -33,8 +34,9 @@ public class Game {
 	private int currentCheckpoint = 0;
 	private ArrayList<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
 	// Used for the music interface
-	private MusicInterface jukebox = new MusicInterface();
+	private Interface jukebox = new Interface();
 	private boolean musicOn = false;
+	public Car car;
 
 	/**
 	 * The main game loop, starts the game, loads all files and then deals with
@@ -51,16 +53,17 @@ public class Game {
 		} catch (Exception e) {
 			System.err.println(e);
 		}
+
 		// Frame rate of game
 		int fps = 60;
 		long fpsTime = System.currentTimeMillis();
 		// Removes the menu elements
 		screen.clearScreen();
 		// Declares Objects
-		Car car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
-				(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500 ,9420, "Player", carPic);
-		Background background = new Background((int) (0 - car.getPlayerX()), (int) (0 - car.getPlayerY()), "background", backgroundImage,
-				scaleFactor);
+		car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
+				(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500, 9420, "Player", carPic);
+		Background background = new Background((int) (0 - car.getPlayerX()), (int) (0 - car.getPlayerY()), "background",
+				backgroundImage, scaleFactor);
 		// Adds images to the screen
 		screen.add(background);
 		screen.add(car);
@@ -68,12 +71,11 @@ public class Game {
 		bkgWidth = background.getImage().getWidth(null);
 		bkgHeight = background.getImage().getHeight(null);
 
-		// Adds Checkpoints
-		startRace(screen, false);
-		updateCheckpoints(screen, car);
-
+		Picture miniMap = new Picture(750, 50, "miniMap", "Map Files/minimap.png");
+		screen.add(miniMap);
 		// Commits the changes to the screen
 		screen.repaint();
+
 		// Main game loop
 		while (true) {
 			// Declare the next frame time
@@ -94,8 +96,7 @@ public class Game {
 			bkg.setY((int) (0 - car.getPlayerY()));
 			// Rotates car
 			car.setImage(rotateImage(car));
-			
-			
+
 			// Applies new background and rotated car to screen
 			screen.replace(bkg, screen.getIndex("background"));
 			screen.replace(car, screen.getIndex("Player"));
@@ -110,7 +111,8 @@ public class Game {
 	private BufferedImage rotateImage(Car car) {
 		BufferedImage img = car.getUnrotatedImage();
 		// Applies Rotation to image, pivoting at the center of the image
-		AffineTransform rotate = AffineTransform.getRotateInstance(car.getPlayerAngle(), img.getWidth() / 2, img.getWidth() / 2);
+		AffineTransform rotate = AffineTransform.getRotateInstance(car.getPlayerAngle(), img.getWidth() / 2,
+				img.getWidth() / 2);
 		// Makes Filter
 		AffineTransformOp filter = new AffineTransformOp(rotate, AffineTransformOp.TYPE_BILINEAR);
 		// Applies Filtering to the image so the pixels don't look jumpy
@@ -164,11 +166,6 @@ public class Game {
 			// Angle * Multiplier = Coordinate
 			car.setPlayerX(car.getPlayerX() - playerDX * carSpeed);
 			car.setPlayerY(car.getPlayerY() - playerDY * carSpeed);
-		}
-
-		// Debug checkpoint hit boxes
-		if (restart) {
-			startRace(screen, true);
 		}
 
 		// Activates music menu
@@ -299,19 +296,19 @@ public class Game {
 	 * @param replace If it is a new race or if its just replacing the elements
 	 *                (useful for adjusting hit boxes on checkpoints)
 	 */
-	private void startRace(Screen screen, boolean replace) {
+	public void startRace(Screen screen, String file) {
 		CheckpointFile cpf = new CheckpointFile();
-		ArrayList<Checkpoint> checkpoints = cpf.readCheckpoints();
+		ArrayList<Checkpoint> checkpoints = cpf.readCheckpoints(file);
 		this.checkpoints = checkpoints;
-		if (!replace) {
-			for (int i = 0; i < checkpoints.size(); i++) {
-				screen.add(checkpoints.get(i));
-			}
-		} else {
-			for (int i = 0; i < checkpoints.size(); i++) {
-				screen.replace(checkpoints.get(i), screen.getIndex(checkpoints.get(i).getID()));
-			}
+		// if a previous race is still in
+		int j = 0;
+		for (int i = 0; i < checkpoints.size(); i++) {
+			screen.add(checkpoints.get(i));
 		}
+		int squX = (int) (checkpoints.get(0).getX() / 50) + 750;
+		int squY = (int) (checkpoints.get(0).getY() / 50) + 50;
+		Square square = new Square(squX, squY, 4, 4, "chkpoint", Color.YELLOW);
+		screen.add(square);
 		currentCheckpoint = 0;
 	}// startRace
 
@@ -327,7 +324,6 @@ public class Game {
 		double centerX = car.getPlayerX() + 420 + (imageWidth / 2);
 		double centerY = car.getPlayerY() + 260 + (imageHeight / 2);
 
-		
 		int whiteSpace = 38;
 		// Y Axis, top and bottom of car
 		double playerUp = centerY - (imageHeight / 2) + whiteSpace;
@@ -335,7 +331,7 @@ public class Game {
 		// X Axis, sides of car
 		double playerLeft = centerX - (imageWidth / 2) + whiteSpace;
 		double playerRight = centerX + (imageWidth / 2) - whiteSpace;
-		
+
 		for (int i = currentCheckpoint; i < checkpoints.size(); i++) {
 			// Make a exact copy of the current checkpoint
 			Checkpoint cpt = new Checkpoint(checkpoints.get(i).getX(), checkpoints.get(i).getY(),
@@ -344,37 +340,54 @@ public class Game {
 			// So you can't hit a checkpoint out of order
 			if (i == currentCheckpoint) {
 				// Collision Detection
-				//All these booleans here so that they don't go into that if statement making things way too confusing
-				boolean centerInCheckpoint = (centerX > cpt.getX() && centerX < (cpt.getX() + cpt.getHeight()) && centerY > cpt.getY()
-						&& centerY < (cpt.getY() + cpt.getWidth()));
-				
-				boolean topInCheckpoint = (playerRight > cpt.getX() && playerRight < (cpt.getX() + cpt.getHeight()) && playerUp > cpt.getY()
-						&& playerUp < (cpt.getY() + cpt.getWidth()));
-				
-				boolean bottomInCheckpoint = (playerRight > cpt.getX() && playerRight < (cpt.getX() + cpt.getHeight()) && playerDown > cpt.getY()
-						&& playerDown < (cpt.getY() + cpt.getWidth()));
-				
-				boolean leftInCheckpoint = (playerLeft > cpt.getX() && playerLeft < (cpt.getX() + cpt.getHeight()) && playerUp > cpt.getY()
-						&& playerUp < (cpt.getY() + cpt.getWidth()));
-				
-				boolean rightInCheckpoint = (playerLeft > cpt.getX() && playerLeft < (cpt.getX() + cpt.getHeight()) && playerDown > cpt.getY()
-						&& playerDown < (cpt.getY() + cpt.getWidth()));
-				
-				
-				if (centerInCheckpoint || topInCheckpoint || bottomInCheckpoint || leftInCheckpoint || rightInCheckpoint) {
+				// All these booleans here so that they don't go into that if statement making
+				// things way too confusing
+				boolean centerInCheckpoint = (centerX > cpt.getX() && centerX < (cpt.getX() + cpt.getHeight())
+						&& centerY > cpt.getY() && centerY < (cpt.getY() + cpt.getWidth()));
+
+				boolean topInCheckpoint = (playerRight > cpt.getX() && playerRight < (cpt.getX() + cpt.getHeight())
+						&& playerUp > cpt.getY() && playerUp < (cpt.getY() + cpt.getWidth()));
+
+				boolean bottomInCheckpoint = (playerRight > cpt.getX() && playerRight < (cpt.getX() + cpt.getHeight())
+						&& playerDown > cpt.getY() && playerDown < (cpt.getY() + cpt.getWidth()));
+
+				boolean leftInCheckpoint = (playerLeft > cpt.getX() && playerLeft < (cpt.getX() + cpt.getHeight())
+						&& playerUp > cpt.getY() && playerUp < (cpt.getY() + cpt.getWidth()));
+
+				boolean rightInCheckpoint = (playerLeft > cpt.getX() && playerLeft < (cpt.getX() + cpt.getHeight())
+						&& playerDown > cpt.getY() && playerDown < (cpt.getY() + cpt.getWidth()));
+
+				if (centerInCheckpoint || topInCheckpoint || bottomInCheckpoint || leftInCheckpoint
+						|| rightInCheckpoint) {
 					currentCheckpoint++;
 					// Replace with dummy value so it doesn't remove the old index
 					Checkpoint dummy = new Checkpoint(0, 0, 0, 0, "blankcp", "blank");
-					screen.replace(dummy, screen.getIndex(cpt.getID()));
+					try {
+						screen.replace(dummy, screen.getIndex(cpt.getID()));
+					} catch (Exception e) {
+
+					}
 					cpt = dummy;
 					checkpoints.set(i, dummy);
+					if (i + 1 < checkpoints.size()) {
+						int squX = (int) (checkpoints.get(i + 1).getX() / 50) + 750;
+						int squY = (int) (checkpoints.get(i + 1).getY() / 50) + 50;
+						Square square = new Square(squX, squY, 4, 4, "chkpoint", Color.YELLOW);
+						if (i + 1 == checkpoints.size()) {
+							square = new Square(squX, squY, 4, 4, "chkpoint", Color.ORANGE);
+						}
+						screen.replace(square, screen.getIndex("chkpoint"));
+					}
 				}
 			}
 			// Adjust so it follows the same draw routine as the background
 			cpt.setX((int) (0 - car.getPlayerX() + cpt.getX()));
 			cpt.setY((int) (0 - car.getPlayerY() + cpt.getY()));
+
 			screen.replace(cpt, screen.getIndex(cpt.getID()));
+
 		}
 		screen.repaint();
 	}// updateCheckpoints
+
 }// Game

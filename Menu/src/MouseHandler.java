@@ -5,7 +5,7 @@ import java.util.Stack;
  * Parses every mouse click to avoid clogging the Screen class with all the
  * possible cases
  * 
- * @version January 19, 2020
+ * @version January 23, 2020
  * @author Riley Power
  *
  */
@@ -20,6 +20,7 @@ public class MouseHandler {
 	 * 
 	 * @param screen The screen which contains
 	 */
+	Interface inter = new Interface();
 	public void mouseInputs(Screen screen, Game game) {
 		Button button;
 		Text text;
@@ -101,7 +102,16 @@ public class MouseHandler {
 				};
 				musicThread.start();
 				break;
+			case "raceMenu":
+				
+				inter.showRaceMenu(screen);
+				break;
+			case "r1Start":
+				game.startRace(screen, "Race Files/race1.race");
+				inter.hideRaceMenu(screen);
+				break;
 			}
+			
 		}
 	}// mouseInputs
 }// MouseHandler

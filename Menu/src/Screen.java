@@ -1,13 +1,16 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
  * Everything to do with drawing the screen, getting mouse movement, and
  * anything to do with the main window is performed in this class
  * 
- * @version January 18, 2021
+ * @version January 23, 2021
  * @author Riley Power
  *
  */
@@ -25,7 +28,8 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	// Starts the game but doesn't display it until the start method is called
 	private Game game = new Game();
 	private Color backgroundColor = Color.WHITE;
-
+	private int lastMouseX = 0;
+	private int lastMouseY = 0;
 	/**
 	 * Constructs the jFrame, mouse listener and key listener
 	 * 
@@ -33,6 +37,9 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 * @param width  How many pixels wide the window will be
 	 */
 	public Screen(int height, int width) {
+		
+		
+		
 		Image icon = Toolkit.getDefaultToolkit().getImage("Image Files/icon.png");
 
 		frame = new JFrame("Unnamed Street Racing Game | By Riley Power");
@@ -98,6 +105,9 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setBackground(backgroundColor);
 		// Loops through each item in the ArrayList and paints it depending which object
+		try {
+			int minimapCarX = 1000;
+			int minimapCarY = 1000;
 		for (int i = 0; i < elements.size(); i++) {
 			if (elements.get(i) instanceof Button) {
 				Button button = (Button) elements.get(i);
@@ -120,6 +130,10 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 			if (elements.get(i) instanceof Car) {
 				Car car = (Car) elements.get(i);
 				g2d.drawImage(car.getImage(), car.getX(), car.getY(), null);
+
+					minimapCarX = (int)((car.getPlayerX() + 420) / 50) + 750;
+					minimapCarY = (int)((car.getPlayerY() + 260) / 50) + 50;
+
 			}
 			if (elements.get(i) instanceof Background) {
 				Background bkg = (Background) elements.get(i);
@@ -144,10 +158,20 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 				g2d.fillRect(cpt.getX(), cpt.getY(), cpt.getHeight(), cpt.getWidth());
 
 			}
+			if (elements.get(i) instanceof Square) {
+				Square square = (Square) elements.get(i);
+				g2d.setColor(square.getColor());
+				g2d.fillRect(square.getX(), square.getY(), square.getHeight(), square.getWidth());
+			}
 		}
+		g2d.setColor(Color.RED);
+		g2d.fillRect(minimapCarX,minimapCarY, 4, 4);
 		// Recursion so it paints until the program is stopped (repaint just calls this
 		// again)
 		repaint();
+		} catch (Exception e) {
+			
+		}
 	}// paint
 
 	/**
@@ -196,6 +220,8 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 */
 	private void whatClicked(int mouseX, int mouseY) {
 		System.out.println(mouseX + " " + mouseY);
+		lastMouseX = mouseX;
+		lastMouseY = mouseY;
 		for (int i = 0; i < elements.size(); i++) {
 			if (elements.get(i) instanceof Button) {
 				Button button = (Button) elements.get(i);
@@ -207,6 +233,16 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 					mouse.mouseInputs(this, game);
 				}
 			}
+		}
+		if(getIndex("miniMap") != -1) {
+			System.out.println("miniMap");
+			ScreenElement map = elements.get(getIndex("miniMap"));
+			if(map.getX() <= mouseX && map.getY() <= mouseY && map.getX() + 200 >= mouseX && map.getY() + 200 >= mouseY) {
+				int mapX = mouseX - map.getX();
+				int mapY = mouseY - map.getY();
+				System.out.println("miniMap" + mapX + "." + + mapY);
+			}
+
 		}
 	}// whatClicked
 
@@ -309,6 +345,15 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 		return keyboard;
 	}// getKeyboard
 
+	
+	public int getLastMouseX() {
+		return lastMouseX;
+	}
+	
+	public int getLastMouseY() {
+		return lastMouseY;
+	}
+	
 	// The following methods are just here to appease MouseListener and
 	// ActionListener
 	public void mouseEntered(MouseEvent e) {
