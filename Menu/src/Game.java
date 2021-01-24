@@ -19,8 +19,6 @@ import javax.imageio.ImageIO;
 public class Game {
 	// Speed multiplier of car
 	private int carSpeed = 10;
-	// Global version of car object, not necessary but its easier to use this as a
-	// unrotated version of the image
 	// Images used by the game
 	private BufferedImage carPic;
 	private BufferedImage collision;
@@ -39,7 +37,12 @@ public class Game {
 	private boolean raceStarted = false;
 	private boolean raceEnded = false;
 	private double raceTimer = 0;
-	public Car car;
+	private double timeToBeat = 57;
+	private double money = 0;
+	private int fps = 60;
+	long timerFadeOut = System.currentTimeMillis() + 5000;
+	//The player
+	private Car car;
 
 	/**
 	 * The main game loop, starts the game, loads all files and then deals with
@@ -60,7 +63,6 @@ public class Game {
 		// Frame rate of game
 		int fps = 60;
 		long fpsTime = System.currentTimeMillis();
-		long timerFadeOut = System.currentTimeMillis() + 5000;
 		// Removes the menu elements
 		screen.clearScreen();
 		// Declares Objects
@@ -100,21 +102,7 @@ public class Game {
 			bkg.setY((int) (0 - car.getPlayerY()));
 			// Rotates car
 			car.setImage(rotateImage(car));
-			if (raceStarted) {
-				raceTimer += 1.0 / fps;
-				Text timer = new Text(10,30,30, "" +((int)((int)(raceTimer * 100) / 100.0) / 60) + ":" + (int)(((int)(raceTimer * 100)) % 6000)  / 100.0,"t");
-				screen.replace(timer, screen.getIndex("t"));
-				timerFadeOut = System.currentTimeMillis() + 5000;
-			}
-			if (raceEnded && System.currentTimeMillis() < timerFadeOut) {
-				raceStarted = false;
-				raceTimer = 0;
-			}
-			if (raceEnded && System.currentTimeMillis() > timerFadeOut) {
-				raceEnded = false;
-				ScreenElement dummy = new ScreenElement(0, 0, "dummy");
-				screen.replace(dummy, screen.getIndex("t"));
-			}
+			timerControl(screen);
 			// Applies new background and rotated car to screen
 			screen.replace(bkg, screen.getIndex("background"));
 			screen.replace(car, screen.getIndex("Player"));
@@ -320,8 +308,9 @@ public class Game {
 		CheckpointFile cpf = new CheckpointFile();
 		ArrayList<Checkpoint> checkpoints = cpf.readCheckpoints(file);
 		this.checkpoints = checkpoints;
+		int raceNum;
+		
 		// if a previous race is still in
-		int j = 0;
 		for (int i = 0; i < checkpoints.size(); i++) {
 			screen.add(checkpoints.get(i));
 		}
@@ -330,6 +319,10 @@ public class Game {
 		Square square = new Square(squX, squY, 4, 4, "chkpoint", Color.YELLOW);
 		screen.add(square);
 		currentCheckpoint = 0;
+		raceNum = Integer.parseInt(file.substring(15, file.length() - 5));
+		System.out.println(raceNum);
+		System.out.println(cpf.timeToBeat(raceNum));
+		timeToBeat = cpf.timeToBeat(raceNum);
 	}// startRace
 
 	/**
@@ -351,7 +344,7 @@ public class Game {
 		// X Axis, sides of car
 		double playerLeft = centerX - (imageWidth / 2) + whiteSpace;
 		double playerRight = centerX + (imageWidth / 2) - whiteSpace;
-
+		Checkpoint dummy = new Checkpoint(0, 0, 0, 0, "blankcp", "blank");
 		for (int i = currentCheckpoint; i < checkpoints.size(); i++) {
 			// Make a exact copy of the current checkpoint
 			Checkpoint cpt = new Checkpoint(checkpoints.get(i).getX(), checkpoints.get(i).getY(),
@@ -381,7 +374,6 @@ public class Game {
 						|| rightInCheckpoint) {
 					currentCheckpoint++;
 					// Replace with dummy value so it doesn't remove the old index
-					Checkpoint dummy = new Checkpoint(0, 0, 0, 0, "blankcp", "blank");
 					try {
 						screen.replace(dummy, screen.getIndex(cpt.getID()));
 					} catch (Exception e) {
@@ -407,6 +399,10 @@ public class Game {
 						System.out.print("end");
 						raceEnded = true;
 					}
+					if (i + 1 == checkpoints.size()) {
+						
+						screen.replace(dummy, screen.getIndex("chkpoint"));
+					}
 				}
 			}
 			// Adjust so it follows the same draw routine as the background
@@ -419,4 +415,33 @@ public class Game {
 		screen.repaint();
 	}// updateCheckpoints
 
+	
+	private void timerControl(Screen screen) {
+		if (raceStarted) {
+			raceTimer += 1.0 / fps;
+			Text timer = new Text(10,30,30, "" +((int)((int)(raceTimer * 100) / 100.0) / 60) + ":" + (int)(((int)(raceTimer * 100)) % 6000)  / 100.0,"t");
+			screen.replace(timer, screen.getIndex("t"));
+			timerFadeOut = System.currentTimeMillis() + 5000;
+		}
+		if(raceStarted && raceEnded) {
+			if(raceTimer > timeToBeat) {
+				money += 1000;
+			} else {
+				money += (int)((timeToBeat - raceTimer) * 100000 / 1.1) / 100 + 1000;
+			}
+			Text moneyText = new Text(10,70,30,"Total Money: $" + money,"moneyText");
+			screen.add(moneyText);
+
+		}
+		if (raceEnded && System.currentTimeMillis() < timerFadeOut) {
+			raceStarted = false;
+			raceTimer = 0;
+		}
+		if (raceEnded && System.currentTimeMillis() > timerFadeOut) {
+			raceEnded = false;
+			ScreenElement dummy = new ScreenElement(0, 0, "dummy");
+			screen.replace(dummy, screen.getIndex("t"));
+			screen.replace(dummy, screen.getIndex("moneyText"));
+		}
+	}
 }// Game

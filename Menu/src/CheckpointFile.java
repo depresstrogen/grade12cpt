@@ -80,4 +80,33 @@ public class CheckpointFile {
 		}
 		return checkpoints;
 	}//readCheckpoints
+	
+	public double timeToBeat(int race) {
+		FileReader in;
+		BufferedReader readFile;
+		String lineOfText;
+		File timesFile = new File("Race Files/timestobeat.txt");
+		try {
+			in = new FileReader(timesFile);
+			readFile = new BufferedReader(in);
+			//Runs until there is nothing left in the file
+			int i = 1;
+			while ((lineOfText = readFile.readLine()) != null) {
+				if(i == race) {
+					readFile.close();
+					in.close();
+					return Double.parseDouble(lineOfText);
+				}
+				i++;
+			}
+			//Memory leaks not pog
+			readFile.close();
+			in.close();
+		} catch (IOException e) {
+			//Errors not pog
+			System.out.println("Problem reading file");
+			System.err.println("IOExeption: " + e.getMessage());
+		}
+		return -1;
+	}
 }

@@ -44,6 +44,7 @@ public class MusicPlayer {
 				System.err.println(e.getMessage());
 			}
 		}
+		shuffle();
 	}// play
 	
 	public void shuffle() {
@@ -51,7 +52,6 @@ public class MusicPlayer {
 		BufferedReader readFile;
 		String lineOfText;
 		ArrayList<String> songs = new ArrayList<String>();
-		final int numBreaks = 2;
 		File checkpointFile = new File("Music Files/songs.txt");
 		try {
 			in = new FileReader(checkpointFile);
@@ -69,22 +69,6 @@ public class MusicPlayer {
 			System.err.println("IOExeption: " + e.getMessage());
 		}
 		Collections.shuffle(songs);
-		int lastBreak = (int) (Math.random() * numBreaks + 1);
-		for (int i = 0; i < numBreaks; i++) {
-			boolean duplicate = true;
-			int comBreak = (int) (Math.random() * numBreaks + 1);
-			while (duplicate) {
-				System.out.println(comBreak + "." + lastBreak);
-				if (comBreak == lastBreak) {
-					comBreak = (int) (Math.random() * numBreaks + 1);
-				} else {
-					duplicate = false;
-				}
-			}
-			lastBreak = comBreak;
-			songs.add(i * 2 + 1, "Music Files/Breaks/radioBreak" + comBreak + ".wav");
-
-		}
 		for (int i = 0; i < songs.size(); i++) {
 			System.out.println(songs.get(i));
 		}
