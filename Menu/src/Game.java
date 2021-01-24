@@ -444,4 +444,10 @@ public class Game {
 			screen.replace(dummy, screen.getIndex("moneyText"));
 		}
 	}
+	
+	public ArrayList<Object> getSaveStats() {
+		ArrayList<Object> stats = new ArrayList<Object>();
+		stats.add(money);
+		return stats;
+	}
 }// Game

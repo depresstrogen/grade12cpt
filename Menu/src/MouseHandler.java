@@ -20,8 +20,11 @@ public class MouseHandler {
 	 * 
 	 * @param screen The screen which contains
 	 */
-	Interface inter = new Interface();
+	
+
 	public void mouseInputs(Screen screen, Game game) {
+		SaveFile sf = new SaveFile();
+		Interface inter = new Interface();
 		Button button;
 		Text text;
 		if (screen.isNewClick()) {
@@ -97,27 +100,39 @@ public class MouseHandler {
 				Thread musicThread = new Thread() {
 					public void run() {
 						player.shuffle();
-						
+
 					}
 				};
 				musicThread.start();
 				break;
 			case "raceMenu":
-				
+
 				inter.showRaceMenu(screen);
 				break;
-				
+
 			case "r1Start":
 				game.startRace(screen, "Race Files/race1.race");
 				inter.hideRaceMenu(screen);
 				break;
-				
+
 			case "r2Start":
 				game.startRace(screen, "Race Files/race2.race");
 				inter.hideRaceMenu(screen);
 				break;
+
+			case "saveGame":
+				inter.showSaveMenu(screen);
+				break;
+				
+			case "saveMenu1":
+				sf.saveFile(game.getSaveStats(), "Save Files/file1.save");
+				break;
+			case "saveMenu4":
+				inter.hideSaveMenu(screen);
+				break;
 			}
-			
+		
+
 		}
 	}// mouseInputs
 }// MouseHandler
