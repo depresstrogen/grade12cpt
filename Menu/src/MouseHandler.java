@@ -5,7 +5,7 @@ import java.util.Stack;
  * Parses every mouse click to avoid clogging the Screen class with all the
  * possible cases
  * 
- * @version January 23, 2020
+ * @version January 25, 2020
  * @author Riley Power
  *
  */
@@ -27,6 +27,7 @@ public class MouseHandler {
 		Thread gameThread;
 		Button button;
 		Text text;
+		boolean exitTrigger = true;
 		if (screen.isNewClick()) {
 			String lastClick = screen.getLastClick();
 			switch (lastClick) {
@@ -37,7 +38,7 @@ public class MouseHandler {
 				break;
 
 			case "mainMenu2":
-
+				screen.loadElements("Menu Files/tutorial1.menu");
 				break;
 
 			case "mainMenu3":
@@ -45,7 +46,11 @@ public class MouseHandler {
 				break;
 
 			case "mainMenu4":
-
+				if (exitTrigger) {
+					System.exit(0);
+				} else {
+					exitTrigger = true;
+				}
 				break;
 
 			case "subMenu1":
@@ -60,11 +65,12 @@ public class MouseHandler {
 				break;
 
 			case "subMenu2":
-				button = (Button) screen.getLastClickObject();
+				screen.clearScreen();
 				screen.loadElements("Menu Files/loadfile.menu");
 				break;
 			case "subMenu4":
-				button = (Button) screen.getLastClickObject();
+				screen.clearScreen();
+				exitTrigger = false;
 				screen.loadElements("Menu Files/main.menu");
 				break;
 
@@ -103,14 +109,23 @@ public class MouseHandler {
 
 			case "saveMenu1":
 				sf.saveFile(game.getSaveStats(), "Save Files/file1.save");
+				Text file1 = (Text) screen.getScreenElement("sm1Text");
+				file1.setText("Saved!");
+				screen.replace(file1, screen.getIndex("sm1Text"));
 				break;
 
 			case "saveMenu2":
 				sf.saveFile(game.getSaveStats(), "Save Files/file2.save");
+				Text file2 = (Text) screen.getScreenElement("sm2Text");
+				file2.setText("Saved!");
+				screen.replace(file2, screen.getIndex("sm2Text"));
 				break;
 
 			case "saveMenu3":
 				sf.saveFile(game.getSaveStats(), "Save Files/file3.save");
+				Text file3 = (Text) screen.getScreenElement("sm3Text");
+				file3.setText("Saved!");
+				screen.replace(file3, screen.getIndex("sm3Text"));
 				break;
 
 			case "saveMenu4":
@@ -180,8 +195,50 @@ public class MouseHandler {
 				break;
 
 			case "creditsMenuExit":
+				exitTrigger = false;
 				screen.loadElements("Menu Files/main.menu");
 				break;
+				
+			case "tut1Back":
+				screen.loadElements("Menu Files/main.menu");
+				break;
+				
+			case "tut1Next":
+				screen.loadElements("Menu Files/tutorial2.menu");
+				break;
+				
+			case "tut2Back":
+				screen.loadElements("Menu Files/tutorial1.menu");
+				break;
+				
+			case "tut2Next":
+				screen.loadElements("Menu Files/tutorial3.menu");
+				break;
+				
+			case "tut3Back":
+				screen.loadElements("Menu Files/tutorial2.menu");
+				break;
+				
+			case "tut3Next":
+				screen.loadElements("Menu Files/tutorial4.menu");
+				break;
+			
+			case "tut4Back":
+				screen.loadElements("Menu Files/tutorial3.menu");
+				break;
+				
+			case "tut4Next":
+				screen.loadElements("Menu Files/tutorial5.menu");
+				break;
+				
+			case "tut5Back":
+				screen.loadElements("Menu Files/tutorial4.menu");
+				break;
+				
+			case "tut5Next":
+				screen.loadElements("Menu Files/main.menu");
+				break;
+				
 			}
 		}
 	}// mouseInputs

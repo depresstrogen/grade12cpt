@@ -54,6 +54,8 @@ public class Interface {
 		screen.replace(dummy, screen.getIndex("findRaceText"));
 		screen.replace(dummy, screen.getIndex("saveGame"));
 		screen.replace(dummy, screen.getIndex("saveGameText"));
+		screen.replace(dummy, screen.getIndex("shopMenu"));
+		screen.replace(dummy, screen.getIndex("shopButtonText"));
 	}// hideInterface
 
 	/**

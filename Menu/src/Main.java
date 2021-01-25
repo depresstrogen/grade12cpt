@@ -6,7 +6,7 @@ import java.awt.Color;
  * This program can ONLY be launched in eclipse, it will NOT compile in Dr. Java
  * or if it does there will be unintended glitches
  * 
- * @version January 24, 2021
+ * @version January 25, 2021
  * @author Riley Power
  *
  */

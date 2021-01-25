@@ -1,0 +1,17 @@
+		Color purple = new Color(145, 50, 168);
+
+		Picture bg = new Picture(0, 0, "tut5bg", "Image Files/Tutorial/tutorial5.png");
+		screen.add(bg);
+		
+		Button option1 = new Button(10, 300, 70, 60, purple, "tut5Back");
+		Button option2 = new Button(915, 300, 70, 60, purple, "tut5Next");
+
+		screen.add(option1);
+		screen.add(option2);
+
+		Text option1Text = new Text(25, 352, 50, "<", "tut5BackText");
+		Text option2Text = new Text(930, 352, 50, ">", "tut5NextText");
+
+		screen.add(option1Text);
+		screen.add(option2Text);
+		screen.saveElements("Menu Files/tutorial5.menu");
