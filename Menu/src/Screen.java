@@ -148,13 +148,16 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 					Checkpoint cpt = (Checkpoint) elements.get(i);
 					switch (cpt.getType()) {
 					case "Start":
-						g2d.setColor(Color.GREEN);
+						Color green = new Color(0,255,64,128);
+						g2d.setColor(green);
 						break;
 					case "CP":
-						g2d.setColor(Color.YELLOW);
+						Color yellow = new Color(252,207,0,128);
+						g2d.setColor(yellow);
 						break;
 					case "Finish":
-						g2d.setColor(Color.RED);
+						Color red = new Color(255,0,0,128);
+						g2d.setColor(red);
 						break;
 					}
 					g2d.fillRect(cpt.getX(), cpt.getY(), cpt.getHeight(), cpt.getWidth());
