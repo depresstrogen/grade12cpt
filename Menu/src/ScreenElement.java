@@ -27,6 +27,7 @@ public class ScreenElement implements Serializable {
 	}// ScreenElement
 
 	/**
+	 * Accessor Method for x
 	 * 
 	 * @return The x coordinate of the element
 	 */
@@ -35,6 +36,7 @@ public class ScreenElement implements Serializable {
 	}// getX
 
 	/**
+	 * Accessor Method for y
 	 * 
 	 * @return The y coordinate of the element
 	 */
@@ -43,6 +45,7 @@ public class ScreenElement implements Serializable {
 	}// getY
 
 	/**
+	 * Accessor method for id
 	 * 
 	 * @return The id of the element
 	 */
@@ -51,6 +54,7 @@ public class ScreenElement implements Serializable {
 	}// getID
 
 	/**
+	 * Mutator Method for x
 	 * 
 	 * @param x The value to set the element's x to
 	 */
@@ -60,6 +64,7 @@ public class ScreenElement implements Serializable {
 	}// setX
 
 	/**
+	 * Mutator Method for y
 	 * 
 	 * @param y The value to set the element's y to
 	 */
@@ -68,6 +73,7 @@ public class ScreenElement implements Serializable {
 	}// setY
 
 	/**
+	 * Mutator Method for id
 	 * 
 	 * @param id The value to set the element's id to
 	 */

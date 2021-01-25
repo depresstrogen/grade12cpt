@@ -14,7 +14,6 @@ public class Text extends ScreenElement {
 	private String font;
 
 	/**
-	 * 
 	 * @param x
 	 * @param y
 	 * @param fontSize
@@ -27,41 +26,50 @@ public class Text extends ScreenElement {
 		this.text = text;
 		color = Color.BLACK;
 		font = "Helvetica";
-	}//Text
+	}// Text
 
 	/**
+	 * Accessor Method for fontSize
+	 * 
 	 * @return Returns the font size of the text object
 	 */
 	public int getFontSize() {
 		return fontSize;
-	}//getFontSize
+	}// getFontSize
 
 	/**
+	 * Accessor Method for text
+	 * 
 	 * @return Returns the text contained in the text object
 	 */
 	public String getText() {
 		return text;
-	}//getText
+	}// getText
 
 	/**
+	 * Accessor Method for color
+	 * 
 	 * @return Returns the desired color the text object
 	 */
 	public Color getColor() {
 		return color;
-	}//getColor
+	}// getColor
 
-	/**
+	/**	
+	 * Accessor Method for font
+	 * 
 	 * @return Returns the font of the text object as a string
 	 */
 	public String getFont() {
 		return font;
-	}//getFont
+	}// getFont
 
 	/**
+	 * Mutator Method for text
 	 * 
 	 * @param text The text to insert in the text object
 	 */
 	public void setText(String text) {
 		this.text = text;
-	}//setText
-}//Text
+	}// setText
+}// Text

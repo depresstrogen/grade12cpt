@@ -15,6 +15,7 @@ public class Background extends ScreenElement {
 	 * @param y     The y coordinate of the background (Top Left)
 	 * @param id    The id of the background used to identify it from an ArrayList
 	 * @param image The image of the background
+	 * @param scaleFactor How much to grow or shrink the image
 	 */
 	public Background(int x, int y, String id, Image image, int scaleFactor) {
 		super(x, y, id);
@@ -23,7 +24,7 @@ public class Background extends ScreenElement {
 	}//Background
 
 	/**
-	 * Sets the background image to be the given image
+	 * Mutator Method for image
 	 * @param image The image to be displayed to represent the car
 	 */
 	public void setImage(Image image) {
@@ -31,6 +32,7 @@ public class Background extends ScreenElement {
 	}//setImage
 
 	/**
+	 * Accessor Method for image
 	 * @return Returns the image to represent the car on screen
 	 */
 	public Image getImage() {
@@ -38,7 +40,7 @@ public class Background extends ScreenElement {
 	}//getImage
 	
 	/**
-	 * Returns the scale factor (how much to enlarge or shrink the image) 
+	 * Accessor Method for scaleFactor
 	 * @return Returns the image's scale factor
 	 */
 	public int getScaleFactor() {

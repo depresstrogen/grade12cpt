@@ -2,7 +2,8 @@ import java.awt.Color;
 
 /**
  * The class which holds all UI elements during the game as loading these from
- * file would not allow the to be accessed very well
+ * file would not allow them to be accessed very well, nor would it allow them
+ * to use if statements or loops
  * 
  * @version January 23, 2021
  * @author Riley Power
@@ -20,22 +21,22 @@ public class Interface {
 
 		Button findRaces = new Button(170, 40, 50, 180, Color.RED, "raceMenu");
 		Text findRaceText = new Text(185, 75, 30, "Find Rallies", "findRaceText");
-		
+
 		Button save = new Button(40, 40, 50, 115, Color.RED, "saveGame");
 		Text saveText = new Text(65, 75, 30, "Save", "saveGameText");
-		
+
 		Button shop = new Button(40, 110, 50, 115, Color.RED, "shopMenu");
 		Text shopText = new Text(65, 145, 30, "Shop", "shopButtonText");
-		
+
 		screen.add(radioOn);
 		screen.add(radioText);
 
 		screen.add(findRaces);
 		screen.add(findRaceText);
-		
+
 		screen.add(save);
 		screen.add(saveText);
-		
+
 		screen.add(shop);
 		screen.add(shopText);
 	}// startInterface
@@ -58,7 +59,7 @@ public class Interface {
 	/**
 	 * Shows the race menu on screen
 	 * 
-	 * @param screen Screen with the race menu active
+	 * @param screen Screen to show the race menu on
 	 */
 	public void showRaceMenu(Screen screen) {
 		Picture bg = new Picture(0, 0, "raceMenuBG", "Image Files/bluegreengrad.png");
@@ -101,7 +102,12 @@ public class Interface {
 		screen.replace(dummy, screen.getIndex("r3Text"));
 		screen.replace(dummy, screen.getIndex("r4Text"));
 	}// hideRaceMenu
-	
+
+	/**
+	 * Shows the save menu on screen
+	 * 
+	 * @param screen The screen to show the save menu on
+	 */
 	public void showSaveMenu(Screen screen) {
 		Picture bg = new Picture(0, 0, "saveMenuBG", "Image Files/bluegreengrad.png");
 		screen.add(bg);
@@ -122,16 +128,19 @@ public class Interface {
 		Text option4Text = new Text(650, 600, 50, "Back", "sm4Text");
 		Text watermark = new Text(10, 650, 12, "By - Riley Power", "saveWatermark");
 
-		
 		screen.add(title);
 		screen.add(option1Text);
 		screen.add(option2Text);
 		screen.add(option3Text);
 		screen.add(option4Text);
 		screen.add(watermark);
+	}// showSaveMenu
 
-	}
-	
+	/**
+	 * Hides the save menu from the screen
+	 * 
+	 * @param screen The screen with the save menu active
+	 */
 	public void hideSaveMenu(Screen screen) {
 		ScreenElement dummy = new ScreenElement(0, 0, "dummy");
 		screen.replace(dummy, screen.getIndex("saveMenuBG"));
@@ -146,40 +155,46 @@ public class Interface {
 		screen.replace(dummy, screen.getIndex("sm4Text"));
 		screen.replace(dummy, screen.getIndex("saveWatermark"));
 	}
-	
+
+	/**
+	 * Shows the shop menu on screen
+	 * 
+	 * @param screen The screen to show the menu on
+	 * @param game   The game which will be purchasing something
+	 */
 	public void showShopMenu(Screen screen, Game game) {
 		Button r1;
 		Button r2;
 		Button r3;
 		Button r4;
-		
+
 		Text stat1Text;
 		Text stat2Text;
 		Text stat3Text;
 		Text stat4Text;
-		
+
 		Picture bg = new Picture(0, 0, "shopMenuBG", "Image Files/bluegreengrad.png");
 
 		Picture c1 = new Picture(35, 185, "Car1", "Image Files/redcar.png");
 		Picture c2 = new Picture(535, 185, "Car2", "Image Files/bluecar.png");
 		Picture c3 = new Picture(35, 385, "Car3", "Image Files/whitecar.png");
 		Picture c4 = new Picture(535, 385, "Car4", "Image Files/blackcar.png");
-		
+
 		Text title = new Text(275, 100, 50, "Shop", "smTitle");
 		Text money = new Text(425, 100, 30, "Available Funds: " + game.getMoney(), "shmTitle");
-		
-		Square s1 = new Square(50,200,100,300,"s1",Color.GREEN);
-		Square sq1 = new Square(60,210,80,80,"sq1",Color.GRAY);
-		
-		Square s2 = new Square(550,200,100,300,"s2",Color.GREEN);
-		Square sq2 = new Square(560,210,80,80,"sq2",Color.GRAY);
-		
-		Square s3 = new Square(50,400,100,300,"s3",Color.GREEN);
-		Square sq3 = new Square(60,410,80,80,"sq3",Color.GRAY);
-		
-		Square s4 = new Square(550,400,100,300,"s4",Color.GREEN);
-		Square sq4 = new Square(560,410,80,80,"sq4",Color.GRAY);
-		
+
+		Square s1 = new Square(50, 200, 100, 300, "s1", Color.GREEN);
+		Square sq1 = new Square(60, 210, 80, 80, "sq1", Color.GRAY);
+
+		Square s2 = new Square(550, 200, 100, 300, "s2", Color.GREEN);
+		Square sq2 = new Square(560, 210, 80, 80, "sq2", Color.GRAY);
+
+		Square s3 = new Square(50, 400, 100, 300, "s3", Color.GREEN);
+		Square sq3 = new Square(60, 410, 80, 80, "sq3", Color.GRAY);
+
+		Square s4 = new Square(550, 400, 100, 300, "s4", Color.GREEN);
+		Square sq4 = new Square(560, 410, 80, 80, "sq4", Color.GRAY);
+
 		if (game.isUnlocked(0)) {
 			r1 = new Button(350, 200, 100, 100, Color.RED, "sh1Start");
 			stat1Text = new Text(365, 260, 25, "Equip", "stat1Text");
@@ -208,12 +223,12 @@ public class Interface {
 			r4 = new Button(850, 400, 100, 100, Color.BLUE, "sh4Start");
 			stat4Text = new Text(877, 460, 25, "Buy", "stat4Text");
 		}
-		
+
 		Text r1Text = new Text(160, 235, 20, "Your Mom's Civic", "sh1Text");
 		Text r2Text = new Text(660, 235, 20, "Probably A Ford", "sh2Text");
 		Text r3Text = new Text(160, 435, 20, "Tesla Model S", "sh3Text");
 		Text r4Text = new Text(660, 435, 20, "Lamborghini + N2O", "sh4Text");
-		
+
 		Text re1Text = new Text(160, 265, 15, "Top Speed: 100 km/h", "she1Text");
 		Text re2Text = new Text(660, 265, 15, "Top Speed: 120 km/h", "she2Text");
 		Text re3Text = new Text(160, 465, 15, "Top Speed: 150 km/h", "she3Text");
@@ -223,63 +238,69 @@ public class Interface {
 		Text pe2Text = new Text(660, 285, 15, "Price: $10,000", "pe2Text");
 		Text pe3Text = new Text(160, 485, 15, "Price: $33,000", "pe3Text");
 		Text pe4Text = new Text(660, 485, 15, "Price: $100,000", "pe4Text");
+
 		screen.add(bg);
-		
+
 		screen.add(c1);
 		screen.add(c2);
 		screen.add(c3);
 		screen.add(c4);
-		
+
 		screen.add(title);
 		screen.add(money);
-		
+
 		screen.add(s1);
 		screen.add(s2);
 		screen.add(s3);
 		screen.add(s4);
-		
+
 		screen.add(sq1);
 		screen.add(sq2);
 		screen.add(sq3);
 		screen.add(sq4);
-		
+
 		screen.add(r1Text);
 		screen.add(r2Text);
 		screen.add(r3Text);
 		screen.add(r4Text);
-		
+
 		screen.add(re1Text);
 		screen.add(re2Text);
 		screen.add(re3Text);
 		screen.add(re4Text);
-		
+
 		screen.add(pe1Text);
 		screen.add(pe2Text);
 		screen.add(pe3Text);
 		screen.add(pe4Text);
-		
+
 		screen.add(c1);
 		screen.add(c2);
 		screen.add(c3);
 		screen.add(c4);
-		
+
 		screen.add(r1);
 		screen.add(r2);
 		screen.add(r3);
 		screen.add(r4);
-		
+
 		screen.add(stat1Text);
 		screen.add(stat2Text);
 		screen.add(stat3Text);
 		screen.add(stat4Text);
-		
+
 		Button back = new Button(40, 580, 50, 115, Color.RED, "shopBack");
 		Text backText = new Text(65, 615, 30, "Back", "shopBackButtonText");
-		
+
 		screen.add(back);
 		screen.add(backText);
 	}// showRaceMenu
-	
+
+	/**
+	 * Hides the shop menu from the screen
+	 * 
+	 * @param screen The screen with the shop menu open
+	 */
 	public void hideShopMenu(Screen screen) {
 		ScreenElement dummy = new ScreenElement(0, 0, "dummy");
 		screen.replace(dummy, screen.getIndex("shopMenuBG"));
@@ -314,12 +335,12 @@ public class Interface {
 		screen.replace(dummy, screen.getIndex("she2Text"));
 		screen.replace(dummy, screen.getIndex("she3Text"));
 		screen.replace(dummy, screen.getIndex("she4Text"));
-		
+
 		screen.replace(dummy, screen.getIndex("pe1Text"));
 		screen.replace(dummy, screen.getIndex("pe2Text"));
 		screen.replace(dummy, screen.getIndex("pe3Text"));
 		screen.replace(dummy, screen.getIndex("pe4Text"));
-		
+
 		screen.replace(dummy, screen.getIndex("shopBack"));
 		screen.replace(dummy, screen.getIndex("shopBackButtonText"));
 		screen.repaint();
@@ -327,5 +348,5 @@ public class Interface {
 		screen.replace(dummy, screen.getIndex("Car2"));
 		screen.replace(dummy, screen.getIndex("Car3"));
 		screen.replace(dummy, screen.getIndex("Car4"));
-	}
-}// MusicInterface
+	}// hideShopMenu
+}// Interface

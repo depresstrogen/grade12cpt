@@ -27,33 +27,32 @@ public class Checkpoint extends ScreenElement {
 		this.width = width;
 		this.height = height;
 		this.type = type;
-	}//Checkpoint
+	}// Checkpoint
 
 	/**
-	 * Returns the desired width of the checkpoint hit box
+	 * Accessor method for width
 	 * 
 	 * @return the width of the button
 	 */
 	public int getWidth() {
 		return width;
-	}//getWidth
+	}// getWidth
 
 	/**
-	 * Returns the desired height of the checkpoint hit box
+	 * Accessor Method for height
 	 * 
 	 * @return the height of the button
 	 */
 	public int getHeight() {
 		return height;
-	}//getHeight
+	}// getHeight
 
 	/**
-	 * Returns the type of checkpoint that this checkpoint is (i.e. Start, CP,
-	 * Finish)
+	 * Accessor Method for type
 	 * 
 	 * @return The type of checkpoint
 	 */
 	public String getType() {
 		return type;
-	}//getType
-}//Checkpoint
+	}// getType
+}// Checkpoint

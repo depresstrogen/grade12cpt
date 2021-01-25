@@ -1,9 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
 
-//So eclipse doesn't give the yellow underline
-@SuppressWarnings("unchecked")
-
 /**
  * The file class, reads and writes an ArrayList using an a ObjectStream, which
  * saves every byte of the ArrayList as it is in RAM

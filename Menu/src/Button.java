@@ -79,7 +79,7 @@ public class Button extends ScreenElement {
 	}// getWidth
 
 	/**
-	 * Returns the desired height of the button
+	 * Accessor Method for height
 	 * 
 	 * @return the height of the button
 	 */
@@ -88,7 +88,7 @@ public class Button extends ScreenElement {
 	}// getHeight
 
 	/**
-	 * Returns the desired color of the button
+	 * Accessor Method For color
 	 * 
 	 * @return the color of the button
 	 */
@@ -97,7 +97,7 @@ public class Button extends ScreenElement {
 	}// getColor
 
 	/**
-	 * Sets the color of the button to the color specified
+	 * Mutator Method for color
 	 * 
 	 * @param color The color to make the button
 	 */

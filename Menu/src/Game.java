@@ -420,6 +420,13 @@ public class Game {
 		screen.repaint();
 	}// updateCheckpoints
 
+	/**
+	 * Counts up the timer each frame, awards money, keeps the timer on screen for 5
+	 * seconds after with your new money total, and then removes the timer and money
+	 * count from screen
+	 * 
+	 * @param screen The screen to draw the time on
+	 */
 	private void timerControl(Screen screen) {
 		if (raceStarted) {
 			raceTimer += 1.0 / fps;
@@ -434,7 +441,7 @@ public class Game {
 			} else {
 				money += (int) ((timeToBeat - raceTimer) * 100000 / 1.1) / 100 + 1000;
 			}
-			Text moneyText = new Text(10, 70, 30, "Total Money: $" + money, "moneyText");
+			Text moneyText = new Text(150, 30, 30, "Total Money: $" + money, "moneyText");
 			screen.add(moneyText);
 
 		}
@@ -448,8 +455,14 @@ public class Game {
 			screen.replace(dummy, screen.getIndex("t"));
 			screen.replace(dummy, screen.getIndex("moneyText"));
 		}
-	}
+	}// timerControl
 
+	/**
+	 * Gets the current amount of money and which cars are unlocked
+	 * 
+	 * @return an Object ArrayList with the amount of money and which cars are
+	 *         unlocked
+	 */
 	public ArrayList<Object> getSaveStats() {
 		ArrayList<Object> stats = new ArrayList<Object>();
 		stats.add(money);
@@ -457,9 +470,14 @@ public class Game {
 			stats.add(carsUnlocked[i]);
 		}
 		return stats;
-	}
+	}// getSaveStats
 
-	public void loadSaveStats(int file) {
+	/**
+	 * Loads the player's money and which cars are unlocked from file using SaveFile
+	 * 
+	 * @param file The file number to load from
+	 */
+	private void loadSaveStats(int file) {
 		String dir;
 		if (file == 0) {
 		} else {
@@ -472,13 +490,20 @@ public class Game {
 			}
 			System.out.println(money);
 		}
-	}
+	}// loadSaveStats
 
+	/**
+	 * Either loads the car if it has already been purchased, or purchases the car
+	 * if one does not already own it
+	 * 
+	 * @param carNum Which car to purchase
+	 * @param screen The screen to place the new car
+	 * @return if the transaction was successful
+	 */
 	public boolean buyCar(int carNum, Screen screen) {
 		int car1Price = 10000;
 		int car2Price = 33000;
 		int car3Price = 100000;
-
 		if (carNum == 0) {
 			try {
 				carPic = ImageIO.read(new File("Image Files/redcar.png"));
@@ -552,13 +577,24 @@ public class Game {
 			}
 		}
 		return false;
-	}
+	}// buyCar
 
+	/**
+	 * Accessor Method for money
+	 * 
+	 * @return the player's current money
+	 */
 	public double getMoney() {
 		return money;
-	}
+	}// getMoney
 
+	/**
+	 * Returns if the specified car is unlocked or not
+	 * 
+	 * @param car The index of the car to check
+	 * @return if the car has been unlocked or not
+	 */
 	public boolean isUnlocked(int car) {
 		return carsUnlocked[car];
-	}
+	}// isUnlocked
 }// Game

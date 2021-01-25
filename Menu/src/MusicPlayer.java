@@ -34,19 +34,22 @@ public class MusicPlayer {
 				System.out.println("Playing " + songs.get(i));
 				audio.open(audioIn);
 				audio.start();
-	                try {
-	                	System.out.print(audio.getMicrosecondLength());
-	                    Thread.sleep(audio.getMicrosecondLength() / 1000);
-	                } catch (InterruptedException ex) {
-	                    ex.printStackTrace();
-	                }
+				try {
+					System.out.print(audio.getMicrosecondLength());
+					Thread.sleep(audio.getMicrosecondLength() / 1000);
+				} catch (InterruptedException ex) {
+					ex.printStackTrace();
+				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
 			}
 		}
 		shuffle();
 	}// play
-	
+
+	/**
+	 * Randomizes the songs to be played, and then calls the play method
+	 */
 	public void shuffle() {
 		FileReader in;
 		BufferedReader readFile;
@@ -73,5 +76,5 @@ public class MusicPlayer {
 			System.out.println(songs.get(i));
 		}
 		play(songs);
-	}
+	}// shuffle
 }// MusicPlayer

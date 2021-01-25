@@ -20,7 +20,6 @@ public class MouseHandler {
 	 * 
 	 * @param screen The screen which contains
 	 */
-	
 
 	public void mouseInputs(Screen screen, Game game) {
 		SaveFile sf = new SaveFile();
@@ -42,7 +41,7 @@ public class MouseHandler {
 				break;
 
 			case "mainMenu3":
-
+				screen.loadElements("Menu Files/credits.menu");
 				break;
 
 			case "mainMenu4":
@@ -78,7 +77,7 @@ public class MouseHandler {
 				};
 				musicThread.start();
 				break;
-				
+
 			case "raceMenu":
 				inter.showRaceMenu(screen);
 				break;
@@ -92,7 +91,7 @@ public class MouseHandler {
 				game.startRace(screen, "Race Files/race2.race");
 				inter.hideRaceMenu(screen);
 				break;
-			
+
 			case "r3Start":
 				game.startRace(screen, "Race Files/race3.race");
 				inter.hideRaceMenu(screen);
@@ -101,23 +100,23 @@ public class MouseHandler {
 			case "saveGame":
 				inter.showSaveMenu(screen);
 				break;
-				
+
 			case "saveMenu1":
 				sf.saveFile(game.getSaveStats(), "Save Files/file1.save");
 				break;
-				
+
 			case "saveMenu2":
 				sf.saveFile(game.getSaveStats(), "Save Files/file2.save");
 				break;
-				
+
 			case "saveMenu3":
 				sf.saveFile(game.getSaveStats(), "Save Files/file3.save");
 				break;
-				
+
 			case "saveMenu4":
 				inter.hideSaveMenu(screen);
 				break;
-				
+
 			case "loadMenu1":
 				screen.loadElements("Menu Files/loading.menu");
 				gameThread = new Thread() {
@@ -127,7 +126,7 @@ public class MouseHandler {
 				};
 				gameThread.start();
 				break;
-				
+
 			case "loadMenu2":
 				screen.loadElements("Menu Files/loading.menu");
 				gameThread = new Thread() {
@@ -137,7 +136,7 @@ public class MouseHandler {
 				};
 				gameThread.start();
 				break;
-			
+
 			case "loadMenu3":
 				screen.loadElements("Menu Files/loading.menu");
 				gameThread = new Thread() {
@@ -147,37 +146,41 @@ public class MouseHandler {
 				};
 				gameThread.start();
 				break;
-				
+
 			case "loadMenu4":
 				screen.loadElements("Menu Files/sub.menu");
 				break;
-				
+
 			case "shopMenu":
 				inter.showShopMenu(screen, game);
 				break;
-				
+
 			case "shopBack":
 				inter.hideShopMenu(screen);
 				break;
-				
+
 			case "sh1Start":
 				game.buyCar(0, screen);
 				inter.hideShopMenu(screen);
 				break;
-				
+
 			case "sh2Start":
 				game.buyCar(1, screen);
 				inter.hideShopMenu(screen);
 				break;
-				
+
 			case "sh3Start":
 				game.buyCar(2, screen);
 				inter.hideShopMenu(screen);
 				break;
-			
+
 			case "sh4Start":
 				game.buyCar(3, screen);
 				inter.hideShopMenu(screen);
+				break;
+
+			case "creditsMenuExit":
+				screen.loadElements("Menu Files/main.menu");
 				break;
 			}
 		}

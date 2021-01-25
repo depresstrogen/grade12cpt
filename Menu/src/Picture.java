@@ -24,6 +24,7 @@ public class Picture extends ScreenElement {
 	}//getImage
 
 	/**
+	 * Accessor Method for imageDir
 	 * @return Returns the directory of the image in the object
 	 */
 	public String getImage() {

@@ -10,7 +10,7 @@ import javax.swing.*;
  * Everything to do with drawing the screen, getting mouse movement, and
  * anything to do with the main window is performed in this class
  * 
- * @version January 23, 2021
+ * @version January 24, 2021
  * @author Riley Power
  *
  */
@@ -30,6 +30,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	private Color backgroundColor = Color.WHITE;
 	private int lastMouseX = 0;
 	private int lastMouseY = 0;
+
 	/**
 	 * Constructs the jFrame, mouse listener and key listener
 	 * 
@@ -105,69 +106,71 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 		try {
 			int minimapCarX = 1000;
 			int minimapCarY = 1000;
-		for (int i = 0; i < elements.size(); i++) {
-			if (elements.get(i) instanceof Button) {
-				Button button = (Button) elements.get(i);
-				g2d.setColor(button.getColor());
-				g2d.fillRect(button.getX(), button.getY(), button.getHeight(), button.getWidth());
-			}
-			if (elements.get(i) instanceof Text) {
-				Text text = (Text) elements.get(i);
-				g2d.setColor(text.getColor());
-				g2d.setFont(new Font(text.getFont(), Font.PLAIN, text.getFontSize()));
-				g2d.drawString(text.getText(), text.getX(), text.getY());
-			}
-
-			if (elements.get(i) instanceof Picture) {
-				Picture picture = (Picture) elements.get(i);
-				Image image = Toolkit.getDefaultToolkit().getImage(picture.getImage());
-				g2d.drawImage(image, picture.getX(), picture.getY(), null);
-			}
-
-			if (elements.get(i) instanceof Car) {
-				Car car = (Car) elements.get(i);
-				g2d.drawImage(car.getImage(), car.getX(), car.getY(), null);
-
-					minimapCarX = (int)((car.getPlayerX() + 420) / 50) + 750;
-					minimapCarY = (int)((car.getPlayerY() + 260) / 50) + 50;
-
-			}
-			if (elements.get(i) instanceof Background) {
-				Background bkg = (Background) elements.get(i);
-				g2d.drawImage(bkg.getImage(), bkg.getX(), bkg.getY(),
-						bkg.getImage().getHeight(null) * bkg.getScaleFactor(),
-						bkg.getImage().getWidth(null) * bkg.getScaleFactor(), null);
-
-			}
-			if (elements.get(i) instanceof Checkpoint) {
-				Checkpoint cpt = (Checkpoint) elements.get(i);
-				switch (cpt.getType()) {
-				case "Start":
-					g2d.setColor(Color.GREEN);
-					break;
-				case "CP":
-					g2d.setColor(Color.YELLOW);
-					break;
-				case "Finish":
-					g2d.setColor(Color.RED);
-					break;
+			for (int i = 0; i < elements.size(); i++) {
+				if (elements.get(i) instanceof Button) {
+					Button button = (Button) elements.get(i);
+					g2d.setColor(button.getColor());
+					g2d.fillRect(button.getX(), button.getY(), button.getHeight(), button.getWidth());
 				}
-				g2d.fillRect(cpt.getX(), cpt.getY(), cpt.getHeight(), cpt.getWidth());
+				if (elements.get(i) instanceof Text) {
+					Text text = (Text) elements.get(i);
+					g2d.setColor(text.getColor());
+					g2d.setFont(new Font(text.getFont(), Font.PLAIN, text.getFontSize()));
+					g2d.drawString(text.getText(), text.getX(), text.getY());
+				}
 
+				if (elements.get(i) instanceof Picture) {
+					Picture picture = (Picture) elements.get(i);
+					Image image = Toolkit.getDefaultToolkit().getImage(picture.getImage());
+					g2d.drawImage(image, picture.getX(), picture.getY(), null);
+					if (picture.getID().equals("miniMap")) {
+						g2d.setColor(Color.RED);
+						g2d.fillRect(minimapCarX, minimapCarY, 4, 4);
+					}
+				}
+
+				if (elements.get(i) instanceof Car) {
+					Car car = (Car) elements.get(i);
+					g2d.drawImage(car.getImage(), car.getX(), car.getY(), null);
+
+					minimapCarX = (int) ((car.getPlayerX() + 420) / 50) + 750;
+					minimapCarY = (int) ((car.getPlayerY() + 260) / 50) + 50;
+
+				}
+				if (elements.get(i) instanceof Background) {
+					Background bkg = (Background) elements.get(i);
+					g2d.drawImage(bkg.getImage(), bkg.getX(), bkg.getY(),
+							bkg.getImage().getHeight(null) * bkg.getScaleFactor(),
+							bkg.getImage().getWidth(null) * bkg.getScaleFactor(), null);
+
+				}
+				if (elements.get(i) instanceof Checkpoint) {
+					Checkpoint cpt = (Checkpoint) elements.get(i);
+					switch (cpt.getType()) {
+					case "Start":
+						g2d.setColor(Color.GREEN);
+						break;
+					case "CP":
+						g2d.setColor(Color.YELLOW);
+						break;
+					case "Finish":
+						g2d.setColor(Color.RED);
+						break;
+					}
+					g2d.fillRect(cpt.getX(), cpt.getY(), cpt.getHeight(), cpt.getWidth());
+
+				}
+				if (elements.get(i) instanceof Square) {
+					Square square = (Square) elements.get(i);
+					g2d.setColor(square.getColor());
+					g2d.fillRect(square.getX(), square.getY(), square.getHeight(), square.getWidth());
+				}
 			}
-			if (elements.get(i) instanceof Square) {
-				Square square = (Square) elements.get(i);
-				g2d.setColor(square.getColor());
-				g2d.fillRect(square.getX(), square.getY(), square.getHeight(), square.getWidth());
-			}
-		}
-		g2d.setColor(Color.RED);
-		g2d.fillRect(minimapCarX,minimapCarY, 4, 4);
-		// Recursion so it paints until the program is stopped (repaint just calls this
-		// again)
-		repaint();
+			// Recursion so it paints until the program is stopped (repaint just calls this
+			// again)
+			repaint();
 		} catch (Exception e) {
-			
+
 		}
 	}// paint
 
@@ -231,13 +234,14 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 				}
 			}
 		}
-		if(getIndex("miniMap") != -1) {
+		if (getIndex("miniMap") != -1) {
 			System.out.println("miniMap");
 			ScreenElement map = elements.get(getIndex("miniMap"));
-			if(map.getX() <= mouseX && map.getY() <= mouseY && map.getX() + 200 >= mouseX && map.getY() + 200 >= mouseY) {
+			if (map.getX() <= mouseX && map.getY() <= mouseY && map.getX() + 200 >= mouseX
+					&& map.getY() + 200 >= mouseY) {
 				int mapX = mouseX - map.getX();
 				int mapY = mouseY - map.getY();
-				System.out.println("miniMap" + mapX + "." + + mapY);
+				System.out.println("miniMap" + mapX + "." + +mapY);
 			}
 
 		}
@@ -342,15 +346,14 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 		return keyboard;
 	}// getKeyboard
 
-	
 	public int getLastMouseX() {
 		return lastMouseX;
 	}
-	
+
 	public int getLastMouseY() {
 		return lastMouseY;
 	}
-	
+
 	// The following methods are just here to appease MouseListener and
 	// ActionListener
 	public void mouseEntered(MouseEvent e) {

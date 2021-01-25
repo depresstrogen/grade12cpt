@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * This class loads checkpoints from a .race file
- * The file structure is as follows
- * <code>(Checkpoint Type) x1 y1 x2 y2 </code>
- * as an example
+ * This class loads checkpoints from a .race file The file structure is as
+ * follows <code>(Checkpoint Type) x1 y1 x2 y2 </code> as an example
  * <code> Start 100 100 400 400 </code>
  * 
  * @version January 23, 2021
@@ -21,6 +19,7 @@ import java.util.Scanner;
 public class CheckpointFile {
 	/**
 	 * Loads a .race file into a Checkpoint array list and returns it
+	 * 
 	 * @return An array with every checkpoint in the specified race
 	 */
 	public ArrayList<Checkpoint> readCheckpoints(String dir) {
@@ -38,16 +37,17 @@ public class CheckpointFile {
 			in = new FileReader(checkpointFile);
 			readFile = new BufferedReader(in);
 			int i = 0;
-			//Runs until there is nothing left in the file
+			// Runs until there is nothing left in the file
 			while ((lineOfText = readFile.readLine()) != null) {
 				int j = 0;
 				int stringIndex = -1;
-				//Parse each line
+				// Parse each line
 				do {
 					lineOfText = lineOfText.substring(stringIndex + 1);
 					stringIndex = lineOfText.indexOf(' ');
-					//Each value has to be in a certain variable and this was the best way i could do it
-					switch(j) {
+					// Each value has to be in a certain variable and this was the best way i could
+					// do it
+					switch (j) {
 					case 0:
 						type = lineOfText.substring(0, stringIndex);
 						break;
@@ -64,23 +64,30 @@ public class CheckpointFile {
 						y2 = Integer.parseInt(lineOfText.substring(0));
 						break;
 					}
-					j ++;
-				} while(j < 5);
-				Checkpoint tempCheckpoint = new Checkpoint(x1, y1 , y2 - y1, x2 - x1 , "CP" + i, type);
+					j++;
+				} while (j < 5);
+				Checkpoint tempCheckpoint = new Checkpoint(x1, y1, y2 - y1, x2 - x1, "CP" + i, type);
 				checkpoints.add(tempCheckpoint);
-				i ++;
+				i++;
 			}
-			//Memory leaks not pog
+			// Memory leaks not pog
 			readFile.close();
 			in.close();
 		} catch (IOException e) {
-			//Errors not pog
+			// Errors not pog
 			System.out.println("Problem reading file");
 			System.err.println("IOExeption: " + e.getMessage());
 		}
 		return checkpoints;
-	}//readCheckpoints
-	
+	}// readCheckpoints
+
+	/**
+	 * Returns the time required (in seconds) to get bonus money from completing a
+	 * race
+	 * 
+	 * @param race which race # to look for
+	 * @return the maximum time to get bonus money from the race
+	 */
 	public double timeToBeat(int race) {
 		FileReader in;
 		BufferedReader readFile;
@@ -89,24 +96,24 @@ public class CheckpointFile {
 		try {
 			in = new FileReader(timesFile);
 			readFile = new BufferedReader(in);
-			//Runs until there is nothing left in the file
+			// Runs until there is nothing left in the file
 			int i = 1;
 			while ((lineOfText = readFile.readLine()) != null) {
-				if(i == race) {
+				if (i == race) {
 					readFile.close();
 					in.close();
 					return Double.parseDouble(lineOfText);
 				}
 				i++;
 			}
-			//Memory leaks not pog
+			// Memory leaks not pog
 			readFile.close();
 			in.close();
 		} catch (IOException e) {
-			//Errors not pog
+			// Errors not pog
 			System.out.println("Problem reading file");
 			System.err.println("IOExeption: " + e.getMessage());
 		}
 		return -1;
-	}
-}
+	}// timeToBeat
+}// Checkpoint File
