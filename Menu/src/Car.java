@@ -12,6 +12,7 @@ public class Car extends ScreenElement {
 	private double playerX;
 	private double playerY;
 	private double playerAngle;
+	private int topSpeed;
 
 	/**
 	 * @param x       The x coordinate of the item on screen (Top Left)
@@ -22,10 +23,11 @@ public class Car extends ScreenElement {
 	 * @param image   The image of the car, make sure it has appropriate blank space
 	 *                around it so it can be rotated without clipping
 	 */
-	public Car(int x, int y, double playerX, double playerY, String id, BufferedImage image) {
+	public Car(int x, int y, double playerX, double playerY, String id, BufferedImage image, int topSpeed) {
 		super(x, y, id);
 		this.image = image;
 		unrotatedImage = image;
+		this.topSpeed = topSpeed;
 	}// Car
 
 	/**
@@ -95,6 +97,10 @@ public class Car extends ScreenElement {
 	 */
 	public double getPlayerAngle() {
 		return playerAngle;
+	}// getPlayerAngle
+	
+	public int getSpeed() {
+		return topSpeed;
 	}// getPlayerAngle
 
 }// Car

@@ -40,8 +40,9 @@ public class Game {
 	private double timeToBeat = 57;
 	private double money = 0;
 	private int fps = 60;
-	long timerFadeOut = System.currentTimeMillis() + 5000;
-	//The player
+	private long timerFadeOut = System.currentTimeMillis() + 5000;
+	private boolean[] carsUnlocked = new boolean[4];
+	// The player
 	private Car car;
 
 	/**
@@ -50,7 +51,7 @@ public class Game {
 	 * 
 	 * @param screen The screen to paint everything to
 	 */
-	synchronized void start(Screen screen) {
+	synchronized void start(Screen screen, int file) {
 		// Load Images
 		try {
 			carPic = ImageIO.read(new File("Image Files/redcar.png"));
@@ -59,15 +60,19 @@ public class Game {
 		} catch (Exception e) {
 			System.err.println(e);
 		}
-
 		// Frame rate of game
 		int fps = 60;
 		long fpsTime = System.currentTimeMillis();
+
+		carsUnlocked[0] = true;
+		loadSaveStats(file);
 		// Removes the menu elements
 		screen.clearScreen();
+
 		// Declares Objects
 		car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
-				(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500, 9420, "Player", carPic);
+				(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500, 9420, "Player", carPic, 10);
+
 		Background background = new Background((int) (0 - car.getPlayerX()), (int) (0 - car.getPlayerY()), "background",
 				backgroundImage, scaleFactor);
 		// Adds images to the screen
@@ -309,7 +314,7 @@ public class Game {
 		ArrayList<Checkpoint> checkpoints = cpf.readCheckpoints(file);
 		this.checkpoints = checkpoints;
 		int raceNum;
-		
+
 		// if a previous race is still in
 		for (int i = 0; i < checkpoints.size(); i++) {
 			screen.add(checkpoints.get(i));
@@ -391,16 +396,16 @@ public class Game {
 						screen.replace(square, screen.getIndex("chkpoint"));
 					}
 					if (i == 0) {
-						Text timer = new Text(20,20,20, "" + raceTimer,"t");
+						Text timer = new Text(20, 20, 20, "" + raceTimer, "t");
 						screen.add(timer);
 						raceStarted = true;
 					}
-					if(i + 1 == checkpoints.size()) {
+					if (i + 1 == checkpoints.size()) {
 						System.out.print("end");
 						raceEnded = true;
 					}
 					if (i + 1 == checkpoints.size()) {
-						
+
 						screen.replace(dummy, screen.getIndex("chkpoint"));
 					}
 				}
@@ -415,21 +420,21 @@ public class Game {
 		screen.repaint();
 	}// updateCheckpoints
 
-	
 	private void timerControl(Screen screen) {
 		if (raceStarted) {
 			raceTimer += 1.0 / fps;
-			Text timer = new Text(10,30,30, "" +((int)((int)(raceTimer * 100) / 100.0) / 60) + ":" + (int)(((int)(raceTimer * 100)) % 6000)  / 100.0,"t");
+			Text timer = new Text(10, 30, 30, "" + ((int) ((int) (raceTimer * 100) / 100.0) / 60) + ":"
+					+ (int) (((int) (raceTimer * 100)) % 6000) / 100.0, "t");
 			screen.replace(timer, screen.getIndex("t"));
 			timerFadeOut = System.currentTimeMillis() + 5000;
 		}
-		if(raceStarted && raceEnded) {
-			if(raceTimer > timeToBeat) {
+		if (raceStarted && raceEnded) {
+			if (raceTimer > timeToBeat) {
 				money += 1000;
 			} else {
-				money += (int)((timeToBeat - raceTimer) * 100000 / 1.1) / 100 + 1000;
+				money += (int) ((timeToBeat - raceTimer) * 100000 / 1.1) / 100 + 1000;
 			}
-			Text moneyText = new Text(10,70,30,"Total Money: $" + money,"moneyText");
+			Text moneyText = new Text(10, 70, 30, "Total Money: $" + money, "moneyText");
 			screen.add(moneyText);
 
 		}
@@ -444,10 +449,116 @@ public class Game {
 			screen.replace(dummy, screen.getIndex("moneyText"));
 		}
 	}
-	
+
 	public ArrayList<Object> getSaveStats() {
 		ArrayList<Object> stats = new ArrayList<Object>();
 		stats.add(money);
+		for (int i = 0; i < carsUnlocked.length; i++) {
+			stats.add(carsUnlocked[i]);
+		}
 		return stats;
+	}
+
+	public void loadSaveStats(int file) {
+		String dir;
+		if (file == 0) {
+		} else {
+			dir = "Save Files/file" + file + ".save";
+			SaveFile sf = new SaveFile();
+			ArrayList<Object> stats = sf.readFile(dir);
+			money = (Double) stats.get(0);
+			for (int i = 0; i < carsUnlocked.length; i++) {
+				carsUnlocked[i] = (Boolean) stats.get(i + 1);
+			}
+			System.out.println(money);
+		}
+	}
+
+	public boolean buyCar(int carNum, Screen screen) {
+		int car1Price = 10000;
+		int car2Price = 33000;
+		int car3Price = 100000;
+
+		if (carNum == 0) {
+			try {
+				carPic = ImageIO.read(new File("Image Files/redcar.png"));
+			} catch (Exception e) {
+				System.err.println(e);
+			}
+			car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
+					(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500, 9420, "Player", carPic, 10);
+			screen.replace(car, screen.getIndex("Player"));
+			screen.repaint();
+			carSpeed = car.getSpeed();
+			return true;
+
+		}
+		if (carNum == 1) {
+			if (money > car1Price || carsUnlocked[1]) {
+				try {
+					carPic = ImageIO.read(new File("Image Files/bluecar.png"));
+				} catch (Exception e) {
+					System.err.println(e);
+				}
+
+				car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
+						(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500, 9420, "Player", carPic, 12);
+				screen.replace(car, screen.getIndex("Player"));
+				screen.repaint();
+				if (!carsUnlocked[1]) {
+					money -= car1Price;
+					carsUnlocked[1] = true;
+				}
+				carSpeed = car.getSpeed();
+				return true;
+			}
+		}
+		if (carNum == 2) {
+			if (money > car2Price || carsUnlocked[2]) {
+				try {
+					carPic = ImageIO.read(new File("Image Files/whitecar.png"));
+				} catch (Exception e) {
+					System.err.println(e);
+				}
+				car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
+						(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500, 9420, "Player", carPic, 15);
+				screen.replace(car, screen.getIndex("Player"));
+				screen.repaint();
+				if (!carsUnlocked[2]) {
+					money -= car2Price;
+					carsUnlocked[2] = true;
+				}
+				carSpeed = car.getSpeed();
+				return true;
+			}
+		}
+		if (carNum == 3) {
+			if (money > car3Price || carsUnlocked[3]) {
+				try {
+					carPic = ImageIO.read(new File("Image Files/blackcar.png"));
+				} catch (Exception e) {
+					System.err.println(e);
+				}
+				car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
+						(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500, 9420, "Player", carPic, 20);
+				screen.replace(car, screen.getIndex("Player"));
+				screen.repaint();
+				if (!carsUnlocked[3]) {
+					money -= car3Price;
+					carsUnlocked[3] = true;
+				}
+				carSpeed = car.getSpeed();
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public double getMoney() {
+		return money;
+	}
+
+	public boolean isUnlocked(int car) {
+		return carsUnlocked[car];
 	}
 }// Game

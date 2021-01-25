@@ -25,6 +25,7 @@ public class MouseHandler {
 	public void mouseInputs(Screen screen, Game game) {
 		SaveFile sf = new SaveFile();
 		Interface inter = new Interface();
+		Thread gameThread;
 		Button button;
 		Text text;
 		if (screen.isNewClick()) {
@@ -37,59 +38,32 @@ public class MouseHandler {
 				break;
 
 			case "mainMenu2":
-				button = (Button) screen.getLastClickObject();
-				text = (Text) screen.getScreenElement("mm2Text");
-				if (button.getColor().equals(Color.RED)) {
-					button.setColor(Color.ORANGE);
-					text.setText("Orange");
-				} else {
-					button.setColor(Color.RED);
-					text.setText("Red");
-				}
-				screen.replace(button, screen.getIndex(lastClick));
-				screen.replace(text, screen.getIndex("mm2Text"));
+
 				break;
 
 			case "mainMenu3":
-				button = (Button) screen.getLastClickObject();
-				text = (Text) screen.getScreenElement("mm3Text");
-				if (button.getColor().equals(Color.RED)) {
-					button.setColor(Color.PINK);
-					text.setText("Pink");
-				} else {
-					button.setColor(Color.RED);
-					text.setText("Red");
-				}
-				screen.replace(button, screen.getIndex(lastClick));
-				screen.replace(text, screen.getIndex("mm3Text"));
+
 				break;
 
 			case "mainMenu4":
-				button = (Button) screen.getLastClickObject();
-				text = (Text) screen.getScreenElement("mm4Text");
-				if (button.getColor().equals(Color.RED)) {
-					button.setColor(Color.CYAN);
-					text.setText("Cyan");
-				} else {
-					button.setColor(Color.RED);
-					text.setText("Red");
-				}
-				screen.replace(button, screen.getIndex(lastClick));
-				screen.replace(text, screen.getIndex("mm4Text"));
+
 				break;
 
 			case "subMenu1":
 				// Starts the game on a new thread
 				screen.loadElements("Menu Files/loading.menu");
-				Thread gameThread = new Thread() {
+				gameThread = new Thread() {
 					public void run() {
-						game.start(screen);
-						;
+						game.start(screen, 0);
 					}
 				};
 				gameThread.start();
 				break;
 
+			case "subMenu2":
+				button = (Button) screen.getLastClickObject();
+				screen.loadElements("Menu Files/loadfile.menu");
+				break;
 			case "subMenu4":
 				button = (Button) screen.getLastClickObject();
 				screen.loadElements("Menu Files/main.menu");
@@ -100,13 +74,12 @@ public class MouseHandler {
 				Thread musicThread = new Thread() {
 					public void run() {
 						player.shuffle();
-
 					}
 				};
 				musicThread.start();
 				break;
+				
 			case "raceMenu":
-
 				inter.showRaceMenu(screen);
 				break;
 
@@ -119,6 +92,11 @@ public class MouseHandler {
 				game.startRace(screen, "Race Files/race2.race");
 				inter.hideRaceMenu(screen);
 				break;
+			
+			case "r3Start":
+				game.startRace(screen, "Race Files/race3.race");
+				inter.hideRaceMenu(screen);
+				break;
 
 			case "saveGame":
 				inter.showSaveMenu(screen);
@@ -127,12 +105,81 @@ public class MouseHandler {
 			case "saveMenu1":
 				sf.saveFile(game.getSaveStats(), "Save Files/file1.save");
 				break;
+				
+			case "saveMenu2":
+				sf.saveFile(game.getSaveStats(), "Save Files/file2.save");
+				break;
+				
+			case "saveMenu3":
+				sf.saveFile(game.getSaveStats(), "Save Files/file3.save");
+				break;
+				
 			case "saveMenu4":
 				inter.hideSaveMenu(screen);
 				break;
+				
+			case "loadMenu1":
+				screen.loadElements("Menu Files/loading.menu");
+				gameThread = new Thread() {
+					public void run() {
+						game.start(screen, 1);
+					}
+				};
+				gameThread.start();
+				break;
+				
+			case "loadMenu2":
+				screen.loadElements("Menu Files/loading.menu");
+				gameThread = new Thread() {
+					public void run() {
+						game.start(screen, 2);
+					}
+				};
+				gameThread.start();
+				break;
+			
+			case "loadMenu3":
+				screen.loadElements("Menu Files/loading.menu");
+				gameThread = new Thread() {
+					public void run() {
+						game.start(screen, 3);
+					}
+				};
+				gameThread.start();
+				break;
+				
+			case "loadMenu4":
+				screen.loadElements("Menu Files/sub.menu");
+				break;
+				
+			case "shopMenu":
+				inter.showShopMenu(screen, game);
+				break;
+				
+			case "shopBack":
+				inter.hideShopMenu(screen);
+				break;
+				
+			case "sh1Start":
+				game.buyCar(0, screen);
+				inter.hideShopMenu(screen);
+				break;
+				
+			case "sh2Start":
+				game.buyCar(1, screen);
+				inter.hideShopMenu(screen);
+				break;
+				
+			case "sh3Start":
+				game.buyCar(2, screen);
+				inter.hideShopMenu(screen);
+				break;
+			
+			case "sh4Start":
+				game.buyCar(3, screen);
+				inter.hideShopMenu(screen);
+				break;
 			}
-		
-
 		}
 	}// mouseInputs
 }// MouseHandler

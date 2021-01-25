@@ -37,12 +37,9 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 * @param width  How many pixels wide the window will be
 	 */
 	public Screen(int height, int width) {
-		
-		
-		
 		Image icon = Toolkit.getDefaultToolkit().getImage("Image Files/icon.png");
 
-		frame = new JFrame("Unnamed Street Racing Game | By Riley Power");
+		frame = new JFrame("Grade 12 CPT | By Riley Power");
 		frame.add(this);
 		frame.setSize(height, width);
 		frame.setIconImage(icon);
