@@ -66,24 +66,32 @@ public class Interface {
 	public void showRaceMenu(Screen screen) {
 		Picture bg = new Picture(0, 0, "raceMenuBG", "Image Files/bluegreengrad.png");
 		Text title = new Text(300, 100, 50, "Avaliable Rallies", "rmTitle");
-		Button r1 = new Button(220, 200, 50, 115, Color.RED, "r1Start");
-		Button r2 = new Button(620, 200, 50, 115, Color.RED, "r2Start");
-		Button r3 = new Button(220, 300, 50, 115, Color.RED, "r3Start");
-		Button r4 = new Button(620, 300, 50, 115, Color.RED, "r4Start");
-		Text r1Text = new Text(230, 235, 30, "Race 1", "r1Text");
-		Text r2Text = new Text(630, 235, 30, "Race 2", "r2Text");
-		Text r3Text = new Text(230, 335, 30, "Race 3", "r3Text");
-		Text r4Text = new Text(630, 335, 30, "Race 4", "r4Text");
+		Button r1 = new Button(260, 200, 50, 115, Color.RED, "r1Start");
+		Button r2 = new Button(580, 200, 50, 115, Color.RED, "r2Start");
+		Button r3 = new Button(260, 300, 50, 115, Color.RED, "r3Start");
+		Button r4 = new Button(580, 300, 50, 115, Color.RED, "r4Start");
+		Button r5 = new Button(260, 400, 50, 115, Color.RED, "r5Start");
+		Button r6 = new Button(580, 400, 50, 115, Color.RED, "r6Start");
+		Text r1Text = new Text(270, 235, 30, "Race 1", "r1Text");
+		Text r2Text = new Text(590, 235, 30, "Race 2", "r2Text");
+		Text r3Text = new Text(270, 335, 30, "Race 3", "r3Text");
+		Text r4Text = new Text(590, 335, 30, "Race 4", "r4Text");
+		Text r5Text = new Text(270, 435, 30, "Race 5", "r5Text");
+		Text r6Text = new Text(590, 435, 30, "Race 6", "r6Text");
 		screen.add(bg);
 		screen.add(title);
 		screen.add(r1);
 		screen.add(r2);
 		screen.add(r3);
 		screen.add(r4);
+		screen.add(r5);
+		screen.add(r6);
 		screen.add(r1Text);
 		screen.add(r2Text);
 		screen.add(r3Text);
 		screen.add(r4Text);
+		screen.add(r5Text);
+		screen.add(r6Text);
 	}// showRaceMenu
 
 	/**
@@ -99,10 +107,14 @@ public class Interface {
 		screen.replace(dummy, screen.getIndex("r2Start"));
 		screen.replace(dummy, screen.getIndex("r3Start"));
 		screen.replace(dummy, screen.getIndex("r4Start"));
+		screen.replace(dummy, screen.getIndex("r5Start"));
+		screen.replace(dummy, screen.getIndex("r6Start"));
 		screen.replace(dummy, screen.getIndex("r1Text"));
 		screen.replace(dummy, screen.getIndex("r2Text"));
 		screen.replace(dummy, screen.getIndex("r3Text"));
 		screen.replace(dummy, screen.getIndex("r4Text"));
+		screen.replace(dummy, screen.getIndex("r5Text"));
+		screen.replace(dummy, screen.getIndex("r6Text"));
 	}// hideRaceMenu
 
 	/**

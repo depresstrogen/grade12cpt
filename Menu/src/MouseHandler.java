@@ -13,7 +13,7 @@ import java.util.Stack;
 public class MouseHandler {
 	// ;)
 	private boolean rickroll = false;
-	
+	private boolean exit = true;
 	/**
 	 * Process the latest mouse input at the time it is called It currently checks
 	 * for - Button Clicks This method is very flexible, and you have to have a case
@@ -44,6 +44,13 @@ public class MouseHandler {
 				screen.loadElements("Menu Files/credits.menu");
 				break;
 
+			case "mainMenu4":
+				if (exit) {
+					System.exit(0);
+				} else {
+					exit = true;
+				}
+				break;
 
 			case "subMenu1":
 				// Starts the game on a new thread
@@ -63,6 +70,7 @@ public class MouseHandler {
 				break;
 			case "subMenu4":
 				screen.clearScreen();
+				exit = false;
 				screen.loadElements("Menu Files/main.menu");
 				break;
 
@@ -97,6 +105,16 @@ public class MouseHandler {
 			
 			case "r4Start":
 				game.startRace(screen, "Race Files/race4.race");
+				inter.hideRaceMenu(screen);
+				break;
+				
+			case "r5Start":
+				game.startRace(screen, "Race Files/race5.race");
+				inter.hideRaceMenu(screen);
+				break;
+				
+			case "r6Start":
+				game.startRace(screen, "Race Files/race6.race");
 				inter.hideRaceMenu(screen);
 				break;
 
@@ -192,6 +210,7 @@ public class MouseHandler {
 				break;
 
 			case "creditsMenuExit":
+				exit = false;
 				screen.loadElements("Menu Files/main.menu");
 				break;
 				
