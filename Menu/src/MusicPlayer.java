@@ -44,13 +44,13 @@ public class MusicPlayer {
 				System.err.println(e.getMessage());
 			}
 		}
-		shuffle();
+		shuffle(false);
 	}// play
 
 	/**
 	 * Randomizes the songs to be played, and then calls the play method
 	 */
-	public void shuffle() {
+	public void shuffle(boolean rickroll) {
 		FileReader in;
 		BufferedReader readFile;
 		String lineOfText;
@@ -72,9 +72,21 @@ public class MusicPlayer {
 			System.err.println("IOExeption: " + e.getMessage());
 		}
 		Collections.shuffle(songs);
-		for (int i = 0; i < songs.size(); i++) {
-			System.out.println(songs.get(i));
+		
+		
+		//The following code is just to rickroll lol
+		ArrayList<String> temp = new ArrayList<String>();
+		
+		if(rickroll) {
+			temp.add("Music Files/rick.wav");
 		}
-		play(songs);
+		for(int i = 0; i < songs.size(); i++) {
+			temp.add(songs.get(i));
+		}
+		
+		for (int i = 0; i < temp.size(); i++) {
+			System.out.println(temp.get(i));
+		}
+		play(temp);
 	}// shuffle
 }// MusicPlayer

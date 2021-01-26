@@ -1,1 +1,2 @@
-rick.wav
+gorilla.wav
+mashsmouth.wav

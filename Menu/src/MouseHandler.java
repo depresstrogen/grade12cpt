@@ -11,7 +11,9 @@ import java.util.Stack;
  */
 
 public class MouseHandler {
-
+	// ;)
+	private boolean rickroll = false;
+	
 	/**
 	 * Process the latest mouse input at the time it is called It currently checks
 	 * for - Button Clicks This method is very flexible, and you have to have a case
@@ -20,20 +22,17 @@ public class MouseHandler {
 	 * 
 	 * @param screen The screen which contains
 	 */
-
 	public void mouseInputs(Screen screen, Game game) {
+		
 		SaveFile sf = new SaveFile();
 		Interface inter = new Interface();
 		Thread gameThread;
-		Button button;
-		Text text;
-		boolean exitTrigger = true;
 		if (screen.isNewClick()) {
 			String lastClick = screen.getLastClick();
 			switch (lastClick) {
 
 			case "mainMenu1":
-				button = (Button) screen.getLastClickObject();
+				
 				screen.loadElements("Menu Files/sub.menu");
 				break;
 
@@ -45,16 +44,10 @@ public class MouseHandler {
 				screen.loadElements("Menu Files/credits.menu");
 				break;
 
-			case "mainMenu4":
-				if (exitTrigger) {
-					System.exit(0);
-				} else {
-					exitTrigger = true;
-				}
-				break;
 
 			case "subMenu1":
 				// Starts the game on a new thread
+				rickroll = true;
 				screen.loadElements("Menu Files/loading.menu");
 				gameThread = new Thread() {
 					public void run() {
@@ -70,7 +63,6 @@ public class MouseHandler {
 				break;
 			case "subMenu4":
 				screen.clearScreen();
-				exitTrigger = false;
 				screen.loadElements("Menu Files/main.menu");
 				break;
 
@@ -78,7 +70,7 @@ public class MouseHandler {
 				MusicPlayer player = new MusicPlayer();
 				Thread musicThread = new Thread() {
 					public void run() {
-						player.shuffle();
+						player.shuffle(rickroll);
 					}
 				};
 				musicThread.start();
@@ -100,6 +92,11 @@ public class MouseHandler {
 
 			case "r3Start":
 				game.startRace(screen, "Race Files/race3.race");
+				inter.hideRaceMenu(screen);
+				break;
+			
+			case "r4Start":
+				game.startRace(screen, "Race Files/race4.race");
 				inter.hideRaceMenu(screen);
 				break;
 
@@ -195,7 +192,6 @@ public class MouseHandler {
 				break;
 
 			case "creditsMenuExit":
-				exitTrigger = false;
 				screen.loadElements("Menu Files/main.menu");
 				break;
 				
