@@ -1,5 +1,3 @@
-import java.awt.Color;
-
 /**
  * This is the file that loads the game AKA the client class
  * 
@@ -20,4 +18,4 @@ public class Main {
 		Screen screen = new Screen(1000, 700);
 		screen.loadElements("Menu Files/main.menu");
 	}// main
-}// Main	
+}// Main
