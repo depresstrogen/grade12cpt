@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * This class loads checkpoints from a .race file The file structure is as
  * follows <code>(Checkpoint Type) x1 y1 x2 y2 </code> as an example
- * <code> Start 100 100 400 400 </code>
+ * <code> Start 100 100 400 400 </code> And loads the times to beat for them
  * 
  * @version January 23, 2021
  * @author Riley Power
@@ -20,6 +20,7 @@ public class CheckpointFile {
 	/**
 	 * Loads a .race file into a Checkpoint array list and returns it
 	 * 
+	 * @param dir The directory to read the checkpoints from
 	 * @return An array with every checkpoint in the specified race
 	 */
 	public ArrayList<Checkpoint> readCheckpoints(String dir) {

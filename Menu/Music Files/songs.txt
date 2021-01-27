@@ -1,2 +1,4 @@
 gorilla.wav
 mashsmouth.wav
+bluesky.wav
+russiaman.wav

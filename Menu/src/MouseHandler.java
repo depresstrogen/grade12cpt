@@ -14,6 +14,9 @@ public class MouseHandler {
 	// ;)
 	private boolean rickroll = false;
 	private boolean exit = true;
+	private boolean musicOn = false;
+	private MusicPlayer player = player = new MusicPlayer();
+
 	/**
 	 * Process the latest mouse input at the time it is called It currently checks
 	 * for - Button Clicks This method is very flexible, and you have to have a case
@@ -21,18 +24,21 @@ public class MouseHandler {
 	 * clickable object is here so...
 	 * 
 	 * @param screen The screen which contains
+	 * @param game The game to load player data from
 	 */
 	public void mouseInputs(Screen screen, Game game) {
-		
+
 		SaveFile sf = new SaveFile();
 		Interface inter = new Interface();
 		Thread gameThread;
+		Thread musicThread;
+		
 		if (screen.isNewClick()) {
 			String lastClick = screen.getLastClick();
 			switch (lastClick) {
 
 			case "mainMenu1":
-				
+
 				screen.loadElements("Menu Files/sub.menu");
 				break;
 
@@ -75,13 +81,17 @@ public class MouseHandler {
 				break;
 
 			case "startMusic":
-				MusicPlayer player = new MusicPlayer();
-				Thread musicThread = new Thread() {
-					public void run() {
-						player.shuffle(rickroll);
-					}
-				};
-				musicThread.start();
+				if (musicOn) {
+					player.skipTrack();
+				} else {
+					musicOn = true;
+					musicThread = new Thread() {
+						public void run() {
+							player.shuffle(rickroll);
+						}
+					};
+					musicThread.start();
+				}
 				break;
 
 			case "raceMenu":
@@ -102,17 +112,17 @@ public class MouseHandler {
 				game.startRace(screen, "Race Files/race3.race");
 				inter.hideRaceMenu(screen);
 				break;
-			
+
 			case "r4Start":
 				game.startRace(screen, "Race Files/race4.race");
 				inter.hideRaceMenu(screen);
 				break;
-				
+
 			case "r5Start":
 				game.startRace(screen, "Race Files/race5.race");
 				inter.hideRaceMenu(screen);
 				break;
-				
+
 			case "r6Start":
 				game.startRace(screen, "Race Files/race6.race");
 				inter.hideRaceMenu(screen);
@@ -213,47 +223,47 @@ public class MouseHandler {
 				exit = false;
 				screen.loadElements("Menu Files/main.menu");
 				break;
-				
+
 			case "tut1Back":
 				screen.loadElements("Menu Files/main.menu");
 				break;
-				
+
 			case "tut1Next":
 				screen.loadElements("Menu Files/tutorial2.menu");
 				break;
-				
+
 			case "tut2Back":
 				screen.loadElements("Menu Files/tutorial1.menu");
 				break;
-				
+
 			case "tut2Next":
 				screen.loadElements("Menu Files/tutorial3.menu");
 				break;
-				
+
 			case "tut3Back":
 				screen.loadElements("Menu Files/tutorial2.menu");
 				break;
-				
+
 			case "tut3Next":
 				screen.loadElements("Menu Files/tutorial4.menu");
 				break;
-			
+
 			case "tut4Back":
 				screen.loadElements("Menu Files/tutorial3.menu");
 				break;
-				
+
 			case "tut4Next":
 				screen.loadElements("Menu Files/tutorial5.menu");
 				break;
-				
+
 			case "tut5Back":
 				screen.loadElements("Menu Files/tutorial4.menu");
 				break;
-				
+
 			case "tut5Next":
 				screen.loadElements("Menu Files/main.menu");
 				break;
-				
+
 			}
 		}
 	}// mouseInputs

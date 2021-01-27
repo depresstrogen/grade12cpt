@@ -10,17 +10,20 @@ import javax.sound.sampled.*;
 /**
  * Plays music stored as .WAV files
  * 
- * @version January 19 2021
+ * @version January 26 2021
  * @author Riley Power
  *
  */
 public class MusicPlayer {
+	private boolean skipped = false;
+
 	/**
 	 * Plays the specified file through the default speakers
 	 * 
 	 * @param dir The file to be played
 	 */
 	public void play(ArrayList<String> songs) {
+		long songEndTime;
 		for (int i = 0; i < songs.size(); i++) {
 			File mp3 = new File(songs.get(i));
 			try {
@@ -34,11 +37,17 @@ public class MusicPlayer {
 				System.out.println("Playing " + songs.get(i));
 				audio.open(audioIn);
 				audio.start();
-				try {
-					System.out.print(audio.getMicrosecondLength());
-					Thread.sleep(audio.getMicrosecondLength() / 1000);
-				} catch (InterruptedException ex) {
-					ex.printStackTrace();
+				// Allows songs to be skipped
+				songEndTime = System.currentTimeMillis() + (audio.getMicrosecondLength() / 1000);
+				System.out.print(audio.getMicrosecondLength());
+				while (System.currentTimeMillis() < songEndTime) {
+					System.out.print("");
+					if (skipped) {
+						songEndTime = System.currentTimeMillis();
+						System.out.println("Skipped");
+						skipped = false;
+						audio.stop();
+					}
 				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
@@ -48,7 +57,16 @@ public class MusicPlayer {
 	}// play
 
 	/**
+	 * Sets skipped to true, stopping the current song and playing the next song in
+	 * queue
+	 */
+	public void skipTrack() {
+		skipped = true;
+	}// skipTrack
+
+	/**
 	 * Randomizes the songs to be played, and then calls the play method
+	 * @param rickroll Puts rick.wav at the beginning of the song queue
 	 */
 	public void shuffle(boolean rickroll) {
 		FileReader in;
@@ -72,18 +90,18 @@ public class MusicPlayer {
 			System.err.println("IOExeption: " + e.getMessage());
 		}
 		Collections.shuffle(songs);
-		
-		
-		//The following code is just to rickroll lol
+
+		// The following code is just to rickroll lol
 		ArrayList<String> temp = new ArrayList<String>();
-		
-		if(rickroll) {
+
+		if (rickroll) {
 			temp.add("Music Files/rick.wav");
 		}
-		for(int i = 0; i < songs.size(); i++) {
+
+		for (int i = 0; i < songs.size(); i++) {
 			temp.add(songs.get(i));
 		}
-		
+
 		for (int i = 0; i < temp.size(); i++) {
 			System.out.println(temp.get(i));
 		}

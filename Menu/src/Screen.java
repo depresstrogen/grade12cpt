@@ -39,7 +39,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	 */
 	public Screen(int height, int width) {
 		Image icon = Toolkit.getDefaultToolkit().getImage("Image Files/icon.png");
-
+		// Start JFrame
 		frame = new JFrame("Grade 12 CPT | By Riley Power");
 		frame.add(this);
 		frame.setSize(height, width);
@@ -48,6 +48,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Keyboard Inputs
+		// Would be in another method but it leeches off JFrame lol
 		frame.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {
 			}
@@ -148,15 +149,15 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 					Checkpoint cpt = (Checkpoint) elements.get(i);
 					switch (cpt.getType()) {
 					case "Start":
-						Color green = new Color(0,255,64,128);
+						Color green = new Color(0, 255, 64, 128);
 						g2d.setColor(green);
 						break;
 					case "CP":
-						Color yellow = new Color(252,207,0,128);
+						Color yellow = new Color(252, 207, 0, 128);
 						g2d.setColor(yellow);
 						break;
 					case "Finish":
-						Color red = new Color(255,0,0,128);
+						Color red = new Color(255, 0, 0, 128);
 						g2d.setColor(red);
 						break;
 					}
@@ -341,6 +342,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	}// setBackgroundColor
 
 	/**
+	 * Accessor Method for keyboard[][]
 	 * 
 	 * @return An array of each possible letter, and if it is currently pressed or
 	 *         not
@@ -349,16 +351,28 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 		return keyboard;
 	}// getKeyboard
 
+	/**
+	 * Accessor Method for lasyMouseX
+	 * 
+	 * @return the mouseX of the last click
+	 */
 	public int getLastMouseX() {
 		return lastMouseX;
-	}
+	}// getLastMouseX
 
+	/**
+	 * Accessor Method for lasyMouseY
+	 * 
+	 * @return the mouseY of the last click
+	 */
 	public int getLastMouseY() {
 		return lastMouseY;
-	}
+	}// getLastMouseY
 
 	// The following methods are just here to appease MouseListener and
-	// ActionListener
+	// ActionListener, they are not used and i dont even know what actionPerformed
+	// does lol
+
 	public void mouseEntered(MouseEvent e) {
 	}// mouseEntered
 
@@ -373,5 +387,4 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 
 	public void actionPerformed(ActionEvent a) {
 	}// actionPerformed
-
 }// Screen

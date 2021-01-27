@@ -50,6 +50,7 @@ public class Game {
 	 * anything to do actually playing the game
 	 * 
 	 * @param screen The screen to paint everything to
+	 * @param file   Which save file to load from
 	 */
 	synchronized void start(Screen screen, int file) {
 		// Load Images
@@ -63,12 +64,12 @@ public class Game {
 		// Frame rate of game
 		int fps = 60;
 		long fpsTime = System.currentTimeMillis();
-
+		// Unlocks the first car by default
 		carsUnlocked[0] = true;
+		// Loads Save
 		loadSaveStats(file);
 		// Removes the menu elements
 		screen.clearScreen();
-
 		// Declares Objects
 		car = new Car((screen.getWidth() / 2) - (carPic.getWidth() / 2),
 				(screen.getHeight() / 2) - (carPic.getHeight() / 2), 5500, 9420, "Player", carPic, 10);
@@ -86,7 +87,6 @@ public class Game {
 		screen.add(miniMap);
 		// Commits the changes to the screen
 		screen.repaint();
-
 		// Main game loop
 		while (true) {
 			// Declare the next frame time
@@ -117,6 +117,7 @@ public class Game {
 	/**
 	 * Rotates the car image
 	 * 
+	 * @param car The car to rotate
 	 * @return The rotated version of the image
 	 */
 	private BufferedImage rotateImage(Car car) {
@@ -136,13 +137,13 @@ public class Game {
 	 * 
 	 * @param keyboard An array with every possible key, and whether it is pressed
 	 *                 or not
+	 * @param car      The car to apply the inputs to
 	 */
 	private void keyboardInputs(boolean[] keyboard, Screen screen, Car car) {
 		boolean left = keyboard['A'];
 		boolean right = keyboard['D'];
 		boolean up = keyboard['W'];
 		boolean down = keyboard['S'];
-		boolean restart = keyboard['R'];
 		boolean music = keyboard['T'];
 		double playerDX;
 		double playerDY;
@@ -201,9 +202,9 @@ public class Game {
 	private void checkCollision(Car car) {
 		// All walls are this exact RGB value
 		int pinkValue = -65281;
-
+		// The offset of the player's X
 		int shiftX = 420;
-		// 260
+		// The offset of the player's y
 		int shiftY = 260;
 		// Height / width of the car image
 		int imageWidth = car.getImage().getWidth();
@@ -237,6 +238,7 @@ public class Game {
 			playerDown = bkgHeight;
 			centerY = playerDown - (imageHeight / 2) + whiteSpace;
 		}
+
 		// Check for OOB position below car
 		if (collision.getRGB((int) centerX, (int) playerDown) == pinkValue) {
 			boolean collisionLoop = true;
@@ -297,7 +299,7 @@ public class Game {
 			playerLeft = centerX - (imageWidth / 2) + whiteSpace;
 		}
 
-		// use
+		// Apply to car
 		car.setPlayerX(centerX - shiftX - (imageWidth / 2));
 		car.setPlayerY(centerY - shiftY - (imageHeight / 2));
 	}// checkCollision
@@ -314,16 +316,17 @@ public class Game {
 		ArrayList<Checkpoint> checkpoints = cpf.readCheckpoints(file);
 		this.checkpoints = checkpoints;
 		int raceNum;
-
 		// if a previous race is still in
 		for (int i = 0; i < checkpoints.size(); i++) {
 			screen.add(checkpoints.get(i));
 		}
 		int squX = (int) (checkpoints.get(0).getX() / 50) + 750;
 		int squY = (int) (checkpoints.get(0).getY() / 50) + 50;
+		// next checkpoint on mini map
 		Square square = new Square(squX, squY, 4, 4, "chkpoint", Color.YELLOW);
 		screen.add(square);
 		currentCheckpoint = 0;
+		// Gets race time to load from directory name
 		raceNum = Integer.parseInt(file.substring(15, file.length() - 5));
 		System.out.println(raceNum);
 		System.out.println(cpf.timeToBeat(raceNum));
@@ -335,13 +338,15 @@ public class Game {
 	 * collision with the upcoming checkpoint
 	 * 
 	 * @param screen The screen to draw the checkpoints on
+	 * @param car    The car which to check collision with checkpoints on
 	 */
 	private void updateCheckpoints(Screen screen, Car car) {
 		int imageWidth = car.getImage().getWidth();
 		int imageHeight = car.getImage().getHeight();
 		double centerX = car.getPlayerX() + 420 + (imageWidth / 2);
 		double centerY = car.getPlayerY() + 260 + (imageHeight / 2);
-
+		// Space around the car sprite on the image
+		// So the car fits in the pixel boundary no matter the rotation
 		int whiteSpace = 38;
 		// Y Axis, top and bottom of car
 		double playerUp = centerY - (imageHeight / 2) + whiteSpace;
@@ -382,7 +387,7 @@ public class Game {
 					try {
 						screen.replace(dummy, screen.getIndex(cpt.getID()));
 					} catch (Exception e) {
-
+						// Non Fatal Error
 					}
 					cpt = dummy;
 					checkpoints.set(i, dummy);
@@ -395,17 +400,17 @@ public class Game {
 						}
 						screen.replace(square, screen.getIndex("chkpoint"));
 					}
+					// Adds timer to screen and starts race
 					if (i == 0) {
 						Text timer = new Text(20, 20, 20, "" + raceTimer, "t");
 						screen.add(timer);
 						raceStarted = true;
 					}
 					if (i + 1 == checkpoints.size()) {
-						System.out.print("end");
+						// Ends Race
+						System.out.println("End of race");
 						raceEnded = true;
-					}
-					if (i + 1 == checkpoints.size()) {
-
+						// Removes yellow from mini map
 						screen.replace(dummy, screen.getIndex("chkpoint"));
 					}
 				}
@@ -429,6 +434,7 @@ public class Game {
 	 */
 	private void timerControl(Screen screen) {
 		if (raceStarted) {
+			// Counts timer up
 			raceTimer += 1.0 / fps;
 			Text timer = new Text(10, 30, 30, "" + ((int) ((int) (raceTimer * 100) / 100.0) / 60) + ":"
 					+ (int) (((int) (raceTimer * 100)) % 6000) / 100.0, "t");
@@ -436,6 +442,7 @@ public class Game {
 			timerFadeOut = System.currentTimeMillis() + 5000;
 		}
 		if (raceStarted && raceEnded) {
+			// Awards Money
 			if (raceTimer > timeToBeat) {
 				money += 1000;
 			} else {
@@ -450,6 +457,7 @@ public class Game {
 			raceTimer = 0;
 		}
 		if (raceEnded && System.currentTimeMillis() > timerFadeOut) {
+			// Removes timer from screen
 			raceEnded = false;
 			ScreenElement dummy = new ScreenElement(0, 0, "dummy");
 			screen.replace(dummy, screen.getIndex("t"));
@@ -504,6 +512,7 @@ public class Game {
 		int car1Price = 10000;
 		int car2Price = 33000;
 		int car3Price = 100000;
+		
 		if (carNum == 0) {
 			try {
 				carPic = ImageIO.read(new File("Image Files/redcar.png"));
@@ -518,6 +527,7 @@ public class Game {
 			return true;
 
 		}
+		
 		if (carNum == 1) {
 			if (money > car1Price || carsUnlocked[1]) {
 				try {

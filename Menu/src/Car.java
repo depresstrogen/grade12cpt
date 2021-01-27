@@ -15,13 +15,14 @@ public class Car extends ScreenElement {
 	private int topSpeed;
 
 	/**
-	 * @param x       The x coordinate of the item on screen (Top Left)
-	 * @param y       The y coordinate of the item on screen (Top Left)
-	 * @param playerX the x coordinate the player is on the map
-	 * @param playerX the y coordinate the player is on the map
-	 * @param id      The id of the picture used to identify it from an ArrayList
-	 * @param image   The image of the car, make sure it has appropriate blank space
-	 *                around it so it can be rotated without clipping
+	 * @param x        The x coordinate of the item on screen (Top Left)
+	 * @param y        The y coordinate of the item on screen (Top Left)
+	 * @param playerX  the x coordinate the player is on the map
+	 * @param playerX  the y coordinate the player is on the map
+	 * @param id       The id of the picture used to identify it from an ArrayList
+	 * @param image    The image of the car, make sure it has appropriate blank
+	 *                 space around it so it can be rotated without clipping
+	 * @param topSpeed The cars speed in pixels per frame
 	 */
 	public Car(int x, int y, double playerX, double playerY, String id, BufferedImage image, int topSpeed) {
 		super(x, y, id);
