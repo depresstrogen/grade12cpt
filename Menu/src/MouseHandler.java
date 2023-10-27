@@ -6,7 +6,7 @@ import java.util.Stack;
  * possible cases
  * 
  * @version January 25, 2020
- * @author Riley Power
+ * @author Emma Power
  *
  */
 

@@ -6,7 +6,7 @@ import java.awt.Color;
  * to use if statements or loops
  * 
  * @version January 23, 2021
- * @author Riley Power
+ * @author Emma Power
  *
  */
 public class Interface {
@@ -140,7 +140,7 @@ public class Interface {
 		Text option2Text = new Text(650, 400, 50, "File 2", "sm2Text");
 		Text option3Text = new Text(650, 500, 50, "File 3", "sm3Text");
 		Text option4Text = new Text(650, 600, 50, "Back", "sm4Text");
-		Text watermark = new Text(10, 650, 12, "By - Riley Power", "saveWatermark");
+		Text watermark = new Text(10, 650, 12, "By - Emma Power", "saveWatermark");
 
 		screen.add(title);
 		screen.add(option1Text);

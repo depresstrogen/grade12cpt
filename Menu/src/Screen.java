@@ -11,7 +11,7 @@ import javax.swing.*;
  * anything to do with the main window is performed in this class
  * 
  * @version January 24, 2021
- * @author Riley Power
+ * @author Emma Power
  *
  */
 public class Screen extends JPanel implements ActionListener, MouseListener {
@@ -40,7 +40,7 @@ public class Screen extends JPanel implements ActionListener, MouseListener {
 	public Screen(int height, int width) {
 		Image icon = Toolkit.getDefaultToolkit().getImage("Image Files/icon.png");
 		// Start JFrame
-		frame = new JFrame("Grade 12 CPT | By Riley Power");
+		frame = new JFrame("Grade 12 CPT | By Emma Power");
 		frame.add(this);
 		frame.setSize(height, width);
 		frame.setIconImage(icon);

@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;;
  * The object for any car on the screen, including the player and AI
  * 
  * @version January 24, 2021
- * @author Riley Power
+ * @author Emma Power
  */
 public class Car extends ScreenElement {
 	private BufferedImage image;

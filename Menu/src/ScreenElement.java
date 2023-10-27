@@ -4,7 +4,7 @@ import java.io.Serializable;
  * The superclass of every ScreenElement
  * 
  * @version January 14 2021
- * @author Riley Power
+ * @author Emma Power
  *
  */
 public class ScreenElement implements Serializable {

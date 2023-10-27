@@ -10,7 +10,7 @@
 		Text option1Text = new Text(650, 300, 50, "Play Game", "mm1Text");
 		Text option2Text = new Text(650, 400, 50, "How To Play", "mm2Text");
 		Text option3Text = new Text(650, 500, 50, "Credits", "mm3Text");
-		Text watermark = new Text(10, 650, 12, "By - Riley Power", "title");
+		Text watermark = new Text(10, 650, 12, "By - Emma Power", "title");
 
 		screen.add(title);
 		screen.add(option1Text);

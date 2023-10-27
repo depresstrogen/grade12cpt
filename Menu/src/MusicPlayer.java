@@ -11,7 +11,7 @@ import javax.sound.sampled.*;
  * Plays music stored as .WAV files
  * 
  * @version January 26 2021
- * @author Riley Power
+ * @author Emma Power
  *
  */
 public class MusicPlayer {

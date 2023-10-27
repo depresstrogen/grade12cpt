@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * saves every byte of the ArrayList as it is in RAM
  * 
  * @version January 14, 2021
- * @author Riley Power
+ * @author Emma Power
  */
 
 public class ScreenFile {

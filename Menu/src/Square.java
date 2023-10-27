@@ -4,7 +4,7 @@ import java.awt.Color;
  * The class for every square to be displayed on screen
  * 
  * @version January 23, 2021
- * @author Riley Power
+ * @author Emma Power
  *
  */
 public class Square extends ScreenElement {

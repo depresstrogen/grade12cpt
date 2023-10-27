@@ -13,7 +13,7 @@ import java.util.Scanner;
  * <code> Start 100 100 400 400 </code> And loads the times to beat for them
  * 
  * @version January 23, 2021
- * @author Riley Power
+ * @author Emma Power
  *
  */
 public class CheckpointFile {

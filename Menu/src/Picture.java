@@ -4,7 +4,7 @@
  * confusion
  * 
  * @version January 14, 2021
- * @author Riley Power
+ * @author Emma Power
  *
  */
 public class Picture extends ScreenElement {

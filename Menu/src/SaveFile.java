@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Line 0 - double money 
  * Lines 1-4 - boolean carsUnlocked[]
  * 
- * @author Riley Power
+ * @author Emma Power
  * @version January 24, 2021
  *
  */

@@ -4,7 +4,7 @@ import java.awt.Image;
  * The object for the background or possible foreground
  * 
  * @version January 16, 2021
- * @author Riley Power
+ * @author Emma Power
  */
 public class Background extends ScreenElement {
 	private Image image;

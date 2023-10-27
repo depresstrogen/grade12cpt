@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
  * Modifying Player Images - Checkpoint Handling - AI
  * 
  * @version January 23, 2021
- * @author Riley Power
+ * @author Emma Power
  */
 public class Game {
 	// Speed multiplier of car

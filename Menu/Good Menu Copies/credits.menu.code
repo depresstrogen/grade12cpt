@@ -6,10 +6,10 @@
 		Text title = new Text(40, 150, 100, "Grade 12 CPT", "title");
 		Text subtitle = new Text(80, 200, 30, "> Credits", "subtitle");
 		
-		Text name = new Text(80, 360, 50, "Riley Power", "subtitle");
+		Text name = new Text(80, 360, 50, "Emma Power", "subtitle");
 
 		Text option4Text = new Text(650, 600, 50, "Return", "sm4Text");
-		Text watermark = new Text(10, 650, 12, "By - Riley Power", "wmark");
+		Text watermark = new Text(10, 650, 12, "By - Emma Power", "wmark");
 
 		screen.add(title);
 		screen.add(subtitle);
@@ -21,7 +21,8 @@
 		Picture penguin = new Picture(750, 60, "pengu", "Image Files/penguinDance.gif");
 		screen.add(penguin);
 		
-		Picture peel = new Picture(520, 170, "peel", "Image Files/riley.png");
+		Picture peel = new Picture(520, 170, "peel", "Image Files/emma.png");
 		screen.add(peel);
 		
 		screen.saveElements("Menu Files/credits.menu");
+		

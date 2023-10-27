@@ -4,7 +4,7 @@ import java.awt.Color;
  * The class for all text to be displayed on screen
  * 
  * @version January 14, 2021
- * @author Riley Power
+ * @author Emma Power
  *
  */
 public class Text extends ScreenElement {

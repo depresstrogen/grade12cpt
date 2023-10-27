@@ -4,7 +4,7 @@
  * intersected at a certain order
  * 
  * @version January 18, 2021
- * @author Riley Power
+ * @author Emma Power
  *
  */
 public class Checkpoint extends ScreenElement {

@@ -14,7 +14,7 @@
 		Text option2Text = new Text(650, 400, 50, "File 2", "lm2Text");
 		Text option3Text = new Text(650, 500, 50, "File 3", "lm3Text");
 		Text option4Text = new Text(650, 600, 50, "Return", "lm4Text");
-		Text watermark = new Text(10, 650, 12, "By - Riley Power", "wmark");
+		Text watermark = new Text(10, 650, 12, "By - Emma Power", "wmark");
 
 		screen.add(title);
 		screen.add(subtitle);
